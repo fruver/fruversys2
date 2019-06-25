@@ -1,0 +1,65 @@
+{
+  "name": "fruversys",
+  "version": "0.0.1",
+  "description": "Fruver System Manager",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "webpack:dev": "webpack-dev-server --config webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fruver/fruverpos.git"
+  },
+  "keywords": [
+    "fruver",
+    "system",
+    "catalogue"
+  ],
+  "author": "Felipe Olaya",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fruver/fruverpos/issues"
+  },
+  "homepage": "https://github.com/fruver/fruverpos#readme",
+  "devDependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.19",
+    "@fortawesome/free-brands-svg-icons": "^5.9.0",
+    "@fortawesome/pro-light-svg-icons": "^5.9.0",
+    "@fortawesome/pro-regular-svg-icons": "^5.9.0",
+    "@fortawesome/pro-solid-svg-icons": "^5.9.0",
+    "@fortawesome/react-fontawesome": "^0.1.4",
+    "@fruver/react-firebase": "0.0.1",
+    "@hot-loader/react-dom": "^16.8.6",
+    "@material-ui/core": "^4.1.1",
+    "@types/react": "^16.8.20",
+    "@types/react-dom": "^16.8.4",
+    "@types/react-router-dom": "^4.3.4",
+    "@types/yup": "^0.26.16",
+    "@typescript-eslint/eslint-plugin": "^1.10.2",
+    "@typescript-eslint/parser": "^1.10.2",
+    "awesome-typescript-loader": "^5.2.1",
+    "classnames": "^2.2.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "clsx": "^1.0.4",
+    "dotenv": "^8.0.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-react": "^7.13.0",
+    "eslint-plugin-react-hooks": "^1.6.0",
+    "firebase": "^6.2.0",
+    "formik": "^1.5.7",
+    "html-webpack-plugin": "^3.2.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-hot-loader": "^4.11.1",
+    "react-router": "^5.0.1",
+    "react-router-dom": "^5.0.1",
+    "rimraf": "^2.6.3",
+    "source-map-loader": "^0.2.4",
+    "typescript": "^3.5.2",
+    "webpack": "^4.34.0",
+    "webpack-cli": "^3.3.4",
+    "webpack-dev-server": "^3.7.1",
+    "yup": "^0.27.0"
+  }
+}
