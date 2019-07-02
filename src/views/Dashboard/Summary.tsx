@@ -1,7 +1,7 @@
 import * as React from 'react';
-import Layout from '../../layouts/Dashboard';
+import Layout from '../../layouts/Layout';
 
-const Dashboard = () => {
+const Summary = () => {
   const title = 'Panel';
 
   return (
@@ -11,4 +11,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Summary;

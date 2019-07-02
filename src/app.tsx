@@ -1,17 +1,12 @@
 import * as React from 'react';
-import {Route} from 'react-router-dom';
+import {BrowserRouter} from 'react-router-dom';
 import firebase from 'firebase/app';
 import {useAuthState, userContext} from '@fruver/react-firebase';
 
-// Components
-import PrivateRoute from './components/PrivateRoute';
-
-// Views
-import Dashboard from './views/Dashboard';
-import {Login} from './views/User';
+// Routes
+import Routes from './Routes';
 
 // Config
-import * as Routes from './constants/routes';
 import FirebaseConfig from './constants/firebase';
 
 // Material UI theme
@@ -47,9 +42,7 @@ export const App = ()  => {
     <userContext.Provider value={{user: user, isLoading: isLoading}}>
       <ThemeProvider theme={theme}>
         <div className="app">
-          <PrivateRoute exact path={Routes.HOME} component={Dashboard} />
-          {/* <PrivateRoute exact path="/catalogue" component={Catalogue} /> */}
-          <Route exact path={Routes.LOGIN} component={Login} />
+          <Routes />
         </div>
       </ThemeProvider>
     </userContext.Provider>

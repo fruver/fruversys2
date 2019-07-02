@@ -1,16 +1,19 @@
 import * as React from 'react';
+import {Link} from 'react-router-dom';
 
 // Material UI
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {makeStyles, createStyles, Theme} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
-import Container from '@material-ui/core/Container';
 
 // Components
-import Logo from '../../components/Logo';
-import Topbar from './components/Topbar';
-import Sidebar from './components/Sidebar';
+import Logo from '../components/Logo';
+import Topbar from './Topbar';
+import Sidebar from './Sidebar';
+
+// Routes
+import {SUMMARY} from '../constants/routes';
 
 const drawerWidth = 240;
 
@@ -78,7 +81,9 @@ const Layout = ({
       >
         {/* Logo */}
         <div className={classes.drawerLogo}>
-          <Logo className={classes.drawerLogoSvg} />
+          <Link to={SUMMARY}>
+            <Logo className={classes.drawerLogoSvg} />
+          </Link>
         </div>
         {/* Divider */}
         <Divider />

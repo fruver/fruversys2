@@ -10,8 +10,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 
-import {TextField} from '../../components/TextField';
-import * as Routes from '../../constants/routes';
+import TextField from '../../components/TextField';
+import {SUMMARY as RouteSummary} from '../../constants/routes';
 import {useSession, loginWithEmailAndPassword} from '@fruver/react-firebase';
 
 const useStyles = makeStyles(theme => ({
@@ -50,7 +50,7 @@ const Login = () => {
 
   if (user) {
     console.log('Already loggedIn, redirect..');
-    return <Redirect to={Routes.DASHBOARD} />;
+    return <Redirect to={RouteSummary} />;
   }
 
   return (

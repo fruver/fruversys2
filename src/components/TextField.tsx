@@ -6,7 +6,7 @@ interface TextFieldProps {
   form: any;
 }
 
-export const TextField = ({field, form, ...props}: TextFieldProps) => (
+const TextField = ({field, form, ...props}: TextFieldProps) => (
   <MaterialTextField
     id={field.name}
     value={field.value}
@@ -19,3 +19,5 @@ export const TextField = ({field, form, ...props}: TextFieldProps) => (
     {...props}
   />
 );
+
+export default TextField;
