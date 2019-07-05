@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import {Formik, Field} from 'formik';
 
 // API
-import {createBrand} from '../../API';
+import CatAPI from '../../CatAPI';
 
 // Components
 import TextField from '../../components/TextField';
@@ -38,7 +38,7 @@ const Form = () => {
       validationSchema={validationSchema}
       onSubmit={(values, {setSubmitting}) => {
         // Create new promise
-        createBrand(values.name).then(resp => {
+        CatAPI.createBrand(values.name).then(resp => {
           alert(resp);
           console.log(resp);
         }).catch(reason => {
@@ -46,10 +46,6 @@ const Form = () => {
           console.log(reason);
           setSubmitting(false);
         });
-        // setTimeout(() => {
-        //   alert(JSON.stringify(values, null, 2));
-        //   setSubmitting(false);
-        // }, 1000);
       }}
       render={({
         errors,
