@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const webpack = require('webpack');
 const dotEnv = require('dotenv').config().parsed;
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-const {CheckerPlugin} = require('awesome-typescript-loader');
 
 const envKeys = Object.keys(dotEnv).reduce((prev, next) => {
   prev[`process.env.${next}`] = JSON.stringify(dotEnv[next]);
@@ -13,7 +11,7 @@ const envKeys = Object.keys(dotEnv).reduce((prev, next) => {
 
 module.exports = {
   context: __dirname,
-  entry: './src/index.tsx',
+  entry: './src/index.jsx',
   output: {
     path: path.join(__dirname, 'dist'),
     publicPath: '/',
@@ -21,7 +19,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
+    extensions: ['.js', '.jsx', '.json'],
     alias: {
       'react-dom': '@hot-loader/react-dom',
     }
@@ -42,21 +40,16 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(ts|tsx)$/,
-        exclude: /(node_modules)/,
-        loader: 'awesome-typescript-loader'
-      },
-      {
-        enforce: 'pre',
         test: /\.(js|jsx)$/,
         exclude: /(node_modules)/,
-        loader: 'source-map-loader'
+        use: {
+          loader: 'babel-loader'
+        }
       }
     ]
   },
 
   plugins: [
-    new CheckerPlugin(),
     new webpack.DefinePlugin(envKeys),
     new CleanWebpackPlugin(),
     new HTMLWebpackPlugin({

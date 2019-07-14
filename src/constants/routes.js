@@ -2,7 +2,7 @@ export const LOGIN = '/login';
 export const SUMMARY = '/';
 
 // DOMAIN API
-export const DOMAIN = process.env.API_DOMAIN || 'http://localhost:5000';
+export const DOMAIN = process.env.API_DOMAIN;
 
 // Product
 export const PRODUCT_LIST = '/products';

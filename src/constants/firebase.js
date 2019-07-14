@@ -1,14 +1,4 @@
-interface Firebase {
-  apiKey: string|undefined;
-  authDomain: string|undefined;
-  databaseURL: string|undefined;
-  projectId: string|undefined;
-  storageBucket: string|undefined;
-  messagingSenderId: string|undefined;
-  appId: string|undefined;
-}
-
-const FirebaseConfig: Firebase = {
+const FirebaseConfig =  {
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
   databaseURL: process.env.FIREBASE_DATABASE_URL,
