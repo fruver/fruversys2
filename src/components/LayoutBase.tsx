@@ -1,18 +1,12 @@
 import * as React from 'react';
 import {Link} from 'react-router-dom';
-
-// Material UI
 import {makeStyles, createStyles, Theme} from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
-import Divider from '@material-ui/core/Divider';
-
-// Components
-import Logo from '../components/Logo';
+import MUICssBaseline from '@material-ui/core/CssBaseline';
+import MUIDrawer from '@material-ui/core/Drawer';
+import MUIDivider from '@material-ui/core/Divider';
+import Logo from './Logo';
 import Topbar from './Topbar';
 import Sidebar from './Sidebar';
-
-// Routes
 import {SUMMARY} from '../constants/routes';
 
 const drawerWidth = 240;
@@ -54,25 +48,25 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-interface LayoutProps {
+interface Props {
   title: string;
   children?: React.ReactNode;
 }
 
-const Layout = ({
+const LayoutBase = ({
   title,
   children
-}: LayoutProps) => {
+}: Props) => {
   const styles = useStyles();
 
   return (
     <div
-      className={styles.root}><CssBaseline />
+      className={styles.root}><MUICssBaseline />
       <Topbar
         className={styles.appBar}
         title={title}
       />
-      <Drawer
+      <MUIDrawer
         className={styles.drawer}
         anchor="left"
         variant="permanent"
@@ -85,10 +79,10 @@ const Layout = ({
           </Link>
         </div>
         {/* Divider */}
-        <Divider />
+        <MUIDivider />
         {/* Sidebar */}
         <Sidebar />
-      </Drawer>
+      </MUIDrawer>
       <main className={styles.content}>
         <div className={styles.toolbar} />
         {children}
@@ -97,4 +91,4 @@ const Layout = ({
   );
 };
 
-export default Layout;
+export default LayoutBase;

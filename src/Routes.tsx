@@ -1,17 +1,16 @@
 import * as React from 'react';
 import {Switch, Route} from 'react-router-dom';
-
-// Routes
-import * as routes from './constants/routes';
-// Components
 import PrivateRoute from './components/PrivateRoute';
-// Views Basic
-import Login from './views/User/Login';
-import Summary from './views/Dashboard/Summary';
+
+// Pages Basic
+import Login from './pages/Login';
+import Summary from './pages/Summary';
+
 // Product Views
-import ProductList from './views/Product/List';
-import ProductCreate from './views/Product/Create';
-// import ProductUpdate from './views/Product/Update';
+import ProductList from './pages/ProductList';
+import ProductCreate from './pages/ProductCreate';
+import ProductUpdate from './pages/ProductUpdate';
+
 // Brand Views
 // import BrandList from './views/Brand/Table';
 // import BrandCreate from './views/Brand/Create';
@@ -20,24 +19,33 @@ import ProductCreate from './views/Product/Create';
 const Routes = () => {
   return (
     <Switch>
-      <PrivateRoute component={Summary} path={routes.SUMMARY} exact/>
-      <Route component={Login} path={routes.LOGIN} />
-
-      {/* Product Views */}
       <PrivateRoute
-        component={ProductList}
-        path='/products'
+        component={Summary} 
+        path="/"
         exact
       />
+      
+      <Route
+        component={Login}
+        path="/login"
+      />
+
+      {/* PRODUCTS */}
+      <PrivateRoute
+        component={ProductList}
+        path="/products"
+        exact
+      />
+
       <PrivateRoute
         component={ProductCreate}
-        path='/products/create'
+        path="/products/create"
       />
-      
-      {/* <PrivateRoute
+
+      <PrivateRoute
         component={ProductUpdate}
         path='/products/:id'
-      /> */}
+      />
 
       {/* Brand Views */}
       {/* <PrivateRoute

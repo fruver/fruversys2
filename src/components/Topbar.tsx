@@ -1,22 +1,14 @@
 import * as React from 'react';
 import {signOut} from '@fruver/react-firebase';
-
-// FontAwesome
 import {FontAwesomeIcon as Icon} from '@fortawesome/react-fontawesome';
-import {
-  faBell as farBell,
-  faSearch as farSearch,
-  faSignOut as farSignOut
-} from '@fortawesome/pro-regular-svg-icons';
-
-// MaterialUI
+import {faBell, faSearch, faSignOut} from '@fortawesome/pro-regular-svg-icons';
 import {makeStyles, createStyles, fade, Theme} from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import InputBase from '@material-ui/core/InputBase';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
+import MUIAppBar from '@material-ui/core/AppBar';
+import MUIInputBase from '@material-ui/core/InputBase';
+import MUIToolbar from '@material-ui/core/Toolbar';
+import MUITypography from '@material-ui/core/Typography';
+import MUIIconButton from '@material-ui/core/IconButton';
+import MUIBadge from '@material-ui/core/Badge';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -61,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-interface TopbarProps {
+interface Props {
   title: string;
   className: string;
 }
@@ -70,7 +62,7 @@ const Topbar = ({
   title,
   className,
   ...otherProps
-}: TopbarProps) => {
+}: Props) => {
   const classes = useStyles();
 
   const handleSignOut = () => {
@@ -78,13 +70,13 @@ const Topbar = ({
   };
 
   return (
-    <AppBar
+    <MUIAppBar
       position="absolute"
       className={className}
       {...otherProps}
     >
-      <Toolbar>
-        <Typography
+      <MUIToolbar>
+        <MUITypography
           className={classes.title}
           component="h1"
           variant="h6"
@@ -92,7 +84,7 @@ const Topbar = ({
           noWrap
         >
           {title}
-        </Typography>
+        </MUITypography>
 
         {/* Add Icons Actions top bar */}
         {/* Search, Notification, Logout */}
@@ -100,9 +92,9 @@ const Topbar = ({
         {/* Search Bar */}
         <div className={classes.search}>
           <div className={classes.searchIcon}>
-            <Icon icon={farSearch} />
+            <Icon icon={faSearch} />
           </div>
-          <InputBase
+          <MUIInputBase
             placeholder="Search..."
             classes={{
               root: classes.inputRoot,
@@ -112,21 +104,21 @@ const Topbar = ({
         </div>
 
         {/* Notification */}
-        <IconButton color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <Icon icon={farBell} />
-          </Badge>
-        </IconButton>
+        <MUIIconButton color="inherit">
+          <MUIBadge badgeContent={4} color="secondary">
+            <Icon icon={faBell} />
+          </MUIBadge>
+        </MUIIconButton>
 
         {/* Signout */}
-        <IconButton
+        <MUIIconButton
           color="inherit"
           onClick={handleSignOut}
         >
-          <Icon icon={farSignOut} />
-        </IconButton>
-      </Toolbar>
-    </AppBar>
+          <Icon icon={faSignOut} />
+        </MUIIconButton>
+      </MUIToolbar>
+    </MUIAppBar>
   );
 };
 

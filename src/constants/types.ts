@@ -1,23 +1,38 @@
-export interface ProductProps {
-  id: number;
+import {IconProp} from '@fortawesome/fontawesome-svg-core';
+
+export interface ProductProp {
+  id: number|string;
   name: string;
-  description: string;
-  sku: number;
-  brand: BrandProps;
-  category: CategoryProps;
-  date?: Date;
+  sku: string;
+  brand?: string;
+  brand_id: number|string;
+  category?: string;
+  category_id: number|string;
 }
 
-export interface CategoryProps {
+export interface CategoryProp {
+  id: number;
+  name: string;
+  children: CategoryProp[];
+}
+
+export interface BrandProp {
   id: number;
   name: string;
   description?: string;
   date?: Date;
 }
 
-export interface BrandProps {
+export interface SideNavItemProp {
   id: number;
-  name: string;
-  description?: string;
-  date?: Date;
+  labelName: string;
+  iconName: IconProp;
+  urlName: string;
+}
+
+export interface TableHeadProp {
+  id: string;
+  label: string;
+  disablePadding: boolean;
+  numeric: boolean;
 }

@@ -1,7 +1,9 @@
 import * as React from 'react';
 import {withRouter, RouteComponentProps} from 'react-router-dom';
-
-import {makeStyles, createStyles} from '@material-ui/core/styles';
+import {makeStyles, createStyles, Theme} from '@material-ui/core/styles';
+import MUIPaper from '@material-ui/core/Paper';
+import MUIToolbar from '@material-ui/core/Toolbar';
+import MUIButton from '@material-ui/core/Button';
 import MUITable from '@material-ui/core/Table';
 import MUITableBody from '@material-ui/core/TableBody';
 import MUITableFooter from '@material-ui/core/TableFooter';
@@ -9,15 +11,24 @@ import MUITablePagination from '@material-ui/core/TablePagination';
 import MUITableRow from '@material-ui/core/TableRow';
 import MUITableCell from '@material-ui/core/TableCell';
 
-import useListView from '../../hooks/useListView';
-import TableHead, {HeadRowsProps} from '../../components/TableHead';
-import {ProductProps} from '../../constants/types';
-import ListView from '../ListView';
+import Layout from '../components/Layout';
+import Link from '../components/Link';
+import TableHead from '../components/TableHead';
+import {ProductProp, TableHeadProp} from '../constants/types';
+import useFetch from '../hooks/useFetch';
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       overflowX: 'auto'
+    },
+    toolbar: {
+      display: 'flex',
+      justifyContent: 'flex-end'
+    },
+    paper: {
+      width: '100%',
+      marginTop: theme.spacing(3)
     },
     table: {
       minWidth: 750
@@ -28,7 +39,7 @@ const useStyles = makeStyles(() =>
   })
 );
 
-const headRows: HeadRowsProps[] = [
+const headRows: TableHeadProp[] = [
   {id:'name', label: 'Producto', disablePadding: false, numeric: false},
   {id: 'brand', label: 'Marca', disablePadding: false, numeric: false},
   {id: 'category', label: 'Categoría', disablePadding: false, numeric: false},
@@ -43,12 +54,12 @@ const ProductList = ({
   // Styles
   const classes = useStyles();
   // Hook useListView
-  const [{isLoading, isError, objects, errors}] = useListView(`${match.url}`);
+  const [{isLoading, isError, data}] = useFetch(`${match.url}`);
 
   {/* PAGINATION */}
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, objects.length - page * rowsPerPage);
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
   const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
@@ -64,19 +75,32 @@ const ProductList = ({
   };
 
   return (
-    <ListView
-      verboseName="Producto"
-      verboseNamePlural="Productos"
+    <Layout
+      title="Productos"
       isLoading={isLoading}
       isError={isError}
-      errors={errors}
     >
-      {objects && objects.length > 0 ? (
+  
+      <MUIToolbar
+        disableGutters
+        className={classes.toolbar}
+      >
+        <MUIButton
+          color="primary"
+          variant="contained"
+          component={Link}
+          to={`${match.path}/create`}
+        >
+          Crear Producto
+        </MUIButton>
+      </MUIToolbar>
+  
+      <MUIPaper>
         <div className={classes.root}>
           <MUITable className={classes.table}>
             <TableHead headRows={headRows} />
             <MUITableBody>
-              {objects.map((product: ProductProps) => (
+              {data.map((product: ProductProp) => (
                 <MUITableRow
                   hover
                   key={product.id}
@@ -84,7 +108,7 @@ const ProductList = ({
                   onClick={() => handleClick(product.id)}
                 >
                   <MUITableCell component="th" scope="row">{product.name}</MUITableCell>
-                  <MUITableCell>{product.brand && product.brand.name}</MUITableCell>
+                  <MUITableCell>{product.brand && product.brand}</MUITableCell>
                   <MUITableCell>{product.category && product.category.name}</MUITableCell>
                   <MUITableCell align="right">{product.sku}</MUITableCell>
                   <MUITableCell align="right">{product.sku}</MUITableCell>
@@ -101,7 +125,7 @@ const ProductList = ({
                 <MUITablePagination
                   rowsPerPageOptions={[5, 10, 25]}
                   colSpan={5}
-                  count={objects.length}
+                  count={data.length}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   SelectProps={{
@@ -115,10 +139,8 @@ const ProductList = ({
             </MUITableFooter>
           </MUITable>
         </div>
-      ):(
-        <h1>Not objects.</h1>
-      )}
-    </ListView>
+      </MUIPaper>
+    </Layout>
   );
 };
 

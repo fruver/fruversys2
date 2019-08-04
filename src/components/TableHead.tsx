@@ -1,22 +1,14 @@
-import React from 'react';
-
-// MaterialUI
+import * as React from 'react';
 import MUITableHead from '@material-ui/core/TableHead';
 import MUITableRow from '@material-ui/core/TableRow';
 import MUITableCell from '@material-ui/core/TableCell';
+import {TableHeadProp} from '../constants/types';
 
-export interface HeadRowsProps {
-  id: string;
-  label: string;
-  disablePadding: boolean;
-  numeric: boolean;
+interface Props {
+  headRows: TableHeadProp[];
 }
 
-export interface TableHeadProps {
-  headRows: HeadRowsProps[];
-}
-
-const TableHead = ({headRows}: TableHeadProps) => {
+const TableHead = ({headRows}: Props) => {
   return (
     <MUITableHead>
       <MUITableRow>

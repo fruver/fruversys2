@@ -1,20 +1,17 @@
 import * as React from 'react';
 import * as Yup from 'yup';
-import {Redirect} from 'react-router-dom';
-// Formik
-import {Formik, Form, Field} from 'formik';
-// MaterialUI
-import {makeStyles, createStyles, Theme} from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Snackbar from '@material-ui/core/Snackbar';
-
-import TextField from '../../components/TextField';
-import {SUMMARY as RouteSummary} from '../../constants/routes';
 import {useSession, loginWithEmailAndPassword} from '@fruver/react-firebase';
+import {Redirect} from 'react-router-dom';
+import {Formik, Form, Field} from 'formik';
+import {makeStyles, createStyles, Theme} from '@material-ui/core/styles';
+import MUIGrid from '@material-ui/core/Grid';
+import MUICard from '@material-ui/core/Card';
+import MUICardHeader from '@material-ui/core/CardHeader';
+import MUICardContent from '@material-ui/core/CardContent';
+import MUIButton from '@material-ui/core/Button';
+import MUISnackbar from '@material-ui/core/Snackbar';
+import TextField from '../components/TextField';
+import {SUMMARY as RouteSummary} from '../constants/routes';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -56,9 +53,9 @@ const Login = () => {
   }
 
   return (
-    <Grid className={classes.root} container justify='center' alignItems='center'>
+    <MUIGrid className={classes.root} container justify='center' alignItems='center'>
       {isSnackBarOpen ? (
-        <Snackbar
+        <MUISnackbar
           anchorOrigin={{
             vertical: 'top',
             horizontal: 'center'
@@ -69,9 +66,9 @@ const Login = () => {
           message={formError}
         />
       ) : null}
-      <Card className={classes.card}>
-        <CardHeader className={classes.cardHeader} title='Iniciar Sesión' />
-        <CardContent>
+      <MUICard className={classes.card}>
+        <MUICardHeader className={classes.cardHeader} title='Iniciar Sesión' />
+        <MUICardContent>
           <Formik
             initialValues={{email: 'andres@fruver.com', password: '12345678'}}
             validationSchema={SignupSchema}
@@ -101,7 +98,7 @@ const Login = () => {
                   type='password'
                   component={TextField}
                 />
-                <Button
+                <MUIButton
                   className={classes.submit}
                   type='submit'
                   variant='contained'
@@ -111,13 +108,13 @@ const Login = () => {
                   fullWidth
                 >
                   Iniciar Sesión
-                </Button>
+                </MUIButton>
               </Form>
             )}
           </Formik>
-        </CardContent>
-      </Card>
-    </Grid> 
+        </MUICardContent>
+      </MUICard>
+    </MUIGrid> 
   );
 };
 

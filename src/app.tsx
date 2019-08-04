@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {BrowserRouter as Router} from 'react-router-dom';
 import firebase from 'firebase/app';
 import {useAuthState, userContext} from '@fruver/react-firebase';
 
@@ -21,7 +22,9 @@ export const App = ()  => {
   return (
     <userContext.Provider value={{user: user, isLoading: isLoading}}>
       <div className="app">
-        <Routes />
+        <Router>
+          <Routes />
+        </Router>
       </div>
     </userContext.Provider>
   );

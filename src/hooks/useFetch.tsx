@@ -7,7 +7,7 @@ const useFetch = (url: string) => {
   const [data, setData] = React.useState([]);
 
   React.useEffect(() => {
-    CatAPI.listView(url).then(resp => {
+    CatAPI.Fetch(url, {method: 'GET'}).then(resp => {
       setData(resp);
     }).catch(reason => {
       setIsError(true);
