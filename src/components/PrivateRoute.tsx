@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Route, Redirect, RouteProps} from 'react-router-dom';
-import {useSession} from '../hooks/useSession';
-// import { LOGIN } from '../constants/routes';
+import {useSession} from '../hooks/useAuth';
 
 interface Props extends RouteProps {
   component?: any;

@@ -26,6 +26,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.22",
     "@fortawesome/pro-duotone-svg-icons": "^5.10.2",
     "@fortawesome/react-fontawesome": "^0.1.4",
+    "@fruver/react-firebase": "0.0.1",
     "@material-ui/core": "^4.1.1",
     "@material-ui/icons": "^4.2.1",
     "@types/jwt-decode": "^2.2.1",

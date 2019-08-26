@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as Yup from 'yup';
 import {Redirect} from 'react-router-dom';
 import {Formik, Form, Field} from 'formik';
+
 import {makeStyles, createStyles, Theme} from '@material-ui/core/styles';
 import MUIGrid from '@material-ui/core/Grid';
 import MUICard from '@material-ui/core/Card';
@@ -10,10 +11,10 @@ import MUICardContent from '@material-ui/core/CardContent';
 import MUIButton from '@material-ui/core/Button';
 import MUISnackbar from '@material-ui/core/Snackbar';
 
-import Auth from '../Auth';
+import {signIn} from '../Auth';
+import {useSession} from '../hooks/useAuth';
 import TextField from '../components/TextField';
 import {SUMMARY as RouteSummary} from '../constants/routes';
-import {useSession} from '../context/user';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -76,7 +77,7 @@ const Login = () => {
             validationSchema={SignupSchema}
             validateOnBlur={false}
             onSubmit={(values, {setSubmitting}) => {
-              Auth.signin(values.email, values.password).then(() => {
+              signIn(values.email, values.password).then(() => {
                 console.log('login successful');
               }).catch((reason) => {
                 setIsSnackBarOpen(!isSnackBarOpen);

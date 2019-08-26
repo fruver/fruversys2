@@ -13,6 +13,8 @@ import MUITypography from '@material-ui/core/Typography';
 import MUIIconButton from '@material-ui/core/IconButton';
 import MUIBadge from '@material-ui/core/Badge';
 
+import {signOut} from '../Auth';
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     title: {
@@ -68,10 +70,6 @@ const Topbar = ({
 }: Props) => {
   const classes = useStyles();
 
-  const handleSignOut = () => {
-    alert('signout');
-  };
-
   return (
     <MUIAppBar
       position="absolute"
@@ -114,10 +112,7 @@ const Topbar = ({
         </MUIIconButton>
 
         {/* Signout */}
-        <MUIIconButton
-          color="inherit"
-          onClick={handleSignOut}
-        >
+        <MUIIconButton color="inherit" onClick={() => signOut()}>
           <Icon icon={faSignOut} />
         </MUIIconButton>
       </MUIToolbar>

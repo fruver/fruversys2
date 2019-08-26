@@ -1,45 +1,38 @@
 import * as React from 'react';
-import auth from '../Auth';
+import * as firebase from 'firebase/app';
+import {User} from 'firebase';
+import 'firebase/auth';
 
-export interface RootContext {
-  user?: any;
+interface RootContext {
+  user?: firebase.User;
   isLoading?: boolean;
 }
 
-export const UserContext = React.createContext<RootContext>({});
+export const authContext = React.createContext<RootContext>({});
 
-export const useAuth = (accessToken: string|null) => {
+export const useSession = () => {
+  const {user} = React.useContext(authContext)
+  return user;
+};
+
+export const useAuth = (auth: any) => {
   const [authState, setAuthState] = React.useState<RootContext>({
     user: undefined,
     isLoading: true
   });
 
   React.useEffect(() => {
-    const unsubscribe = () => {
-      if (accessToken) {
-        auth.setToken(accessToken);
-        setAuthState({
-          user: auth.user(),
-          isLoading: false
-        })
-      } else if (!accessToken) {
-        // Logout
-        auth.signOut()
-        setAuthState({
-          user: undefined,
-          isLoading: false
-        });
-      }
-    };
+    const unsubscribe = auth.onAuthStateChanged((user: User) => {
+      setAuthState({
+        user: user,
+        isLoading: false
+      });
+    });
 
-    return unsubscribe();
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
+  }, [auth]);
 
-  }, [accessToken]);
-
+  // Return the user object and auth methods
   return authState;
-};
-
-export const useSession = () => {
-  const {user} = React.useContext(UserContext);
-  return user;
 };
