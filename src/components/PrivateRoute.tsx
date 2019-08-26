@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Route, Redirect, RouteProps} from 'react-router-dom';
-import {useSession} from '@fruver/react-firebase';
+import {useSession} from '../hooks/useSession';
 // import { LOGIN } from '../constants/routes';
 
 interface Props extends RouteProps {
@@ -22,7 +22,7 @@ const PrivateRoute = ({
         ) : (
           <Redirect
             to={{
-              pathname: "/login",
+              pathname: '/login',
               state: {from: props.location}
             }}
           />

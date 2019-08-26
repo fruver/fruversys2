@@ -6,7 +6,7 @@ const Summary = () => {
 
   return (
     <LayoutBase title={title}>
-      Panel
+      {title}
     </LayoutBase>
   );
 };

@@ -1,7 +1,9 @@
 import * as React from 'react';
 import {NavLink, LinkProps} from 'react-router-dom';
+
 import {FontAwesomeIcon as Icon} from '@fortawesome/react-fontawesome';
-import {faScanner} from '@fortawesome/pro-solid-svg-icons';
+import {faScanner} from '@fortawesome/pro-duotone-svg-icons';
+
 import {makeStyles, createStyles, Theme} from '@material-ui/core/styles';
 import MUIList from '@material-ui/core/List';
 import MUIListItem from '@material-ui/core/ListItem';

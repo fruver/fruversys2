@@ -1,8 +1,7 @@
-export const LOGIN = '/login';
-export const SUMMARY = '/';
+export const DOMAIN_API = process.env.API_DOMAIN || 'http://localhost:8000';
 
-// DOMAIN API
-export const DOMAIN = process.env.API_DOMAIN;
+export const SUMMARY = '/';
+export const LOGIN = '/login';
 
 // Product
 export const PRODUCT_LIST = '/products';

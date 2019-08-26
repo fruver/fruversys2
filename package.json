@@ -23,14 +23,12 @@
   },
   "homepage": "https://github.com/fruver/fruverpos#readme",
   "devDependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.19",
-    "@fortawesome/free-brands-svg-icons": "^5.9.0",
-    "@fortawesome/pro-light-svg-icons": "^5.9.0",
-    "@fortawesome/pro-regular-svg-icons": "^5.9.0",
-    "@fortawesome/pro-solid-svg-icons": "^5.9.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.22",
+    "@fortawesome/pro-duotone-svg-icons": "^5.10.2",
     "@fortawesome/react-fontawesome": "^0.1.4",
-    "@fruver/react-firebase": "0.0.1",
     "@material-ui/core": "^4.1.1",
+    "@material-ui/icons": "^4.2.1",
+    "@types/jwt-decode": "^2.2.1",
     "@types/react": "^16.8.23",
     "@types/react-dom": "^16.8.4",
     "@types/react-router-dom": "^4.3.4",
@@ -48,6 +46,7 @@
     "firebase": "^6.2.0",
     "formik": "^1.5.7",
     "html-webpack-plugin": "^3.2.0",
+    "jwt-decode": "^2.2.0",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "node-hid": "^0.7.9",
@@ -65,5 +64,6 @@
     "webpack-cli": "^3.3.4",
     "webpack-dev-server": "^3.7.1",
     "yup": "^0.27.0"
-  }
+  },
+  "dependencies": {}
 }

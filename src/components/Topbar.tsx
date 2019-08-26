@@ -1,7 +1,10 @@
 import * as React from 'react';
-import {signOut} from '@fruver/react-firebase';
+
 import {FontAwesomeIcon as Icon} from '@fortawesome/react-fontawesome';
-import {faBell, faSearch, faSignOut} from '@fortawesome/pro-regular-svg-icons';
+import {faBell} from '@fortawesome/pro-duotone-svg-icons';
+import {faSearch} from '@fortawesome/pro-duotone-svg-icons'
+import {faSignOut} from '@fortawesome/pro-duotone-svg-icons';
+
 import {makeStyles, createStyles, fade, Theme} from '@material-ui/core/styles';
 import MUIAppBar from '@material-ui/core/AppBar';
 import MUIInputBase from '@material-ui/core/InputBase';
@@ -66,7 +69,7 @@ const Topbar = ({
   const classes = useStyles();
 
   const handleSignOut = () => {
-    signOut();
+    alert('signout');
   };
 
   return (

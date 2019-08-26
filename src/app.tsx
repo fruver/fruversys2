@@ -1,17 +1,21 @@
 import * as React from 'react';
 import {BrowserRouter as Router} from 'react-router-dom';
-import firebase from 'firebase/app';
-import {useAuthState, userContext} from '@fruver/react-firebase';
 
+import {UserContext} from './context/user';
+import {useAuth} from './hooks/useAuth';
 import {Spinner} from './components/Spinner';
-import FirebaseConfig from './constants/firebase';
 import Routes from './Routes';
 
-// Firebase Init
-firebase.initializeApp(FirebaseConfig);
+
+//import Auth from './Auth';
+// cada ves que se actualice la app
+// se genera un nuevo id de esta variable
+// por lo tanto debe volver a verificar
+// el use
+//const auth = new Auth;
 
 export const App = ()  => {
-  const {isLoading, user} = useAuthState(firebase.auth());
+  const {user, isLoading} = useAuth(localStorage.getItem('jwt_access'));
 
   if(isLoading) {
     return (
@@ -20,13 +24,13 @@ export const App = ()  => {
   }
 
   return (
-    <userContext.Provider value={{user: user, isLoading: isLoading}}>
+    <UserContext.Provider value={{user: user, isLoading: isLoading}}>
       <div className="app">
         <Router>
           <Routes />
         </Router>
       </div>
-    </userContext.Provider>
+    </UserContext.Provider>
   );
 };
 

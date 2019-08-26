@@ -1,8 +1,10 @@
 import * as React from 'react';
-import {FontAwesomeIcon as Icon} from '@fortawesome/react-fontawesome';
-import {faBug} from '@fortawesome/pro-regular-svg-icons';
+
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import MUISnackbarContent from '@material-ui/core/SnackbarContent';
+import MUIIconButton from '@material-ui/core/IconButton';
+import ErrorIcon from '@material-ui/icons/Error';
+
 import LayoutBase from './LayoutBase';
 import {SpinnerLinear} from './Spinner';
 
@@ -57,12 +59,9 @@ const Layout = ({
           className={classes.snackbarContentError}
           message={
             <span className={classes.snackbarContentMessage}>
-              <Icon
-                className={classes.snackbarContentIcon}
-                icon={faBug}
-                size="lg"
-                fixedWidth
-              />
+              <MUIIconButton className={classes.snackbarContentIcon}>
+                <ErrorIcon />
+              </MUIIconButton>
               Ups! a ocurrido un error, si el problema persiste
               por favor contacta al equipo de soporte.
             </span>

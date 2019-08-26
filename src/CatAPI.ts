@@ -1,24 +1,21 @@
-class CatAPI {
-  domain: string | undefined;
+import {DOMAIN_API} from './constants/routes';
 
-  constructor() {
-    this.domain = process.env.API_DOMAIN;
-  }
+class CatAPI {
 
   Fetch = async (url: string, options: any) => {
     try {
-      return await this.fetch(url, options)
+      return await this.fetch(url, options);
     } catch(reason) {
       throw reason;
     }
   }
 
-  fetch = async (url: string, options: object) => {
+  fetch = async (path: string, options: object) => {
     const headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     };
-    const response = await fetch(`${this.domain}${url}`, {
+    const response = await fetch(`${DOMAIN_API}/${path}`, {
       headers,
       ...options
     });

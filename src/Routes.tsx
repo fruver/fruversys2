@@ -19,7 +19,7 @@ import ProductUpdate from './pages/ProductUpdate';
 const Routes = () => {
   return (
     <Switch>
-      <PrivateRoute
+      <Route
         component={Summary} 
         path="/"
         exact
