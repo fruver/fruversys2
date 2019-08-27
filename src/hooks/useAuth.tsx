@@ -1,38 +1,55 @@
 import * as React from 'react';
-import * as firebase from 'firebase/app';
-import {User} from 'firebase';
-import 'firebase/auth';
+import jwtDecode from 'jwt-decode';
 
 interface RootContext {
-  user?: firebase.User;
-  isLoading?: boolean;
+  user?: any;
+  setValue?: any;
 }
 
 export const authContext = React.createContext<RootContext>({});
 
-export const useSession = () => {
-  const {user} = React.useContext(authContext)
-  return user;
+export const useAuth = () => {
+  return React.useContext(authContext);
 };
 
-export const useAuth = (auth: any) => {
-  const [authState, setAuthState] = React.useState<RootContext>({
-    user: undefined,
-    isLoading: true
+export const useProvideAuth = () => {
+  // State to store our value
+  // Pass initial state function to useState so logic is only executed once
+  const [accessToken, setAccessToken] = React.useState(() => {
+    const token = window.localStorage.getItem('access_token');
+    return token ? token : null;
   });
 
-  React.useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user: User) => {
-      setAuthState({
-        user: user,
-        isLoading: false
-      });
-    });
+  const [user, setUser] = React.useState(false);
 
-    // Cleanup subscription on unmount
-    return () => unsubscribe();
-  }, [auth]);
+  // Return a wrapped version of useState's setter function that ...
+  // ... persists the new value to localStorage.
+  const setValue = (value: string) => {
+    try {
+      // Save state
+      setAccessToken(value);
+      // Save to local storage
+      window.localStorage.setItem('access_token', JSON.stringify(value));
+      // Save state user
+      setUser(true);
+    } catch (error) {
+      // A more advanced implementation would handle the error case
+      console.log(error);
+      setUser(false);
+    }
+  };
+
+  React.useEffect(() => {
+    console.log('test');
+    window.addEventListener('storage', (event) => {
+      const token = window.localStorage.getItem('access_token');
+      alert('token');
+    });
+  }, []);
 
   // Return the user object and auth methods
-  return authState;
+  return {
+    user,
+    setValue
+  };
 };
