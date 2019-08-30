@@ -1,55 +1,38 @@
 import * as React from 'react';
-import jwtDecode from 'jwt-decode';
+import * as firebase from 'firebase/app';
+import {User} from 'firebase/app';
+import 'firebase/auth';
 
 interface RootContext {
-  user?: any;
-  setValue?: any;
+  user?: User;
+  isLoading?: boolean;
 }
 
-export const authContext = React.createContext<RootContext>({});
+export const AuthContext = React.createContext<RootContext>({});
 
-export const useAuth = () => {
-  return React.useContext(authContext);
+export const useSession = () => {
+  const {user} = React.useContext(AuthContext);
+  return user;
 };
 
-export const useProvideAuth = () => {
-  // State to store our value
-  // Pass initial state function to useState so logic is only executed once
-  const [accessToken, setAccessToken] = React.useState(() => {
-    const token = window.localStorage.getItem('access_token');
-    return token ? token : null;
-  });
-
-  const [user, setUser] = React.useState(false);
-
-  // Return a wrapped version of useState's setter function that ...
-  // ... persists the new value to localStorage.
-  const setValue = (value: string) => {
-    try {
-      // Save state
-      setAccessToken(value);
-      // Save to local storage
-      window.localStorage.setItem('access_token', JSON.stringify(value));
-      // Save state user
-      setUser(true);
-    } catch (error) {
-      // A more advanced implementation would handle the error case
-      console.log(error);
-      setUser(false);
-    }
-  };
+export const useAuth = () => {
+  const [authState, setAuthState] = React.useState<RootContext>({
+    user: undefined,
+    isLoading: true
+  })
 
   React.useEffect(() => {
-    console.log('test');
-    window.addEventListener('storage', (event) => {
-      const token = window.localStorage.getItem('access_token');
-      alert('token');
+    const unsubscribe = firebase.auth().onAuthStateChanged(authUser=> {
+      setAuthState({
+        user: authUser ? authUser : undefined,
+        isLoading: false
+      });
+      console.log(authUser);
     });
+
+    return unsubscribe;
   }, []);
 
   // Return the user object and auth methods
-  return {
-    user,
-    setValue
-  };
+  return authState;
 };

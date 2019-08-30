@@ -1,4 +1,4 @@
-import {DOMAIN_API} from './constants/routes';
+import {DOMAIN_API} from '../constants/routes';
 
 class CatAPI {
 

@@ -11,8 +11,8 @@ import MUICardContent from '@material-ui/core/CardContent';
 import MUIButton from '@material-ui/core/Button';
 import MUISnackbar from '@material-ui/core/Snackbar';
 
-import Auth from '../Auth';
-import {useAuth} from '../hooks/useAuth';
+import Auth from '../resources/Auth';
+import {useSession} from '../hooks/useAuth';
 import TextField from '../components/TextField';
 import {SUMMARY as RouteSummary} from '../constants/routes';
 
@@ -34,23 +34,22 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const SignupSchema = Yup.object().shape({
+const SignInSchema = Yup.object().shape({
   email: Yup.string().trim()
     .email('El correo electronico ingresado no es válido.')
-    .matches(/(\W|^)[\w.+-]*@fruver\.com(\W|$)/)
     .required('Este campo es obligatorio'),
   password: Yup.string()
     .required('Este campo es obligatorio')
     .min(8, 'La contraseña debe tener minimo 8 caracteres')
 });
 
-const Login = () => {
+const SignIn = () => {
   const classes = useStyles();
-  const {user, setValue} = useAuth();
+  const user = useSession();
   const [isSnackBarOpen, setIsSnackBarOpen] = React.useState(false);
   const [formError, setFormError] = React.useState(null);
 
-  if (user) {
+  if (user && !user.isAnonymous) {
     console.log('Already loggedIn, redirect..');
     return <Redirect to={RouteSummary} />;
   }
@@ -74,14 +73,13 @@ const Login = () => {
         <MUICardContent>
           <Formik
             initialValues={{email: 'andres@fruver.com', password: 'admin123'}}
-            validationSchema={SignupSchema}
+            validationSchema={SignInSchema}
             validateOnBlur={false}
             onSubmit={(values, {setSubmitting}) => {
-              Auth.signIn(values.email, values.password).then(resp => {
-                console.log(resp);
-                setValue(resp);
-                console.log('login successful');
-              }).catch((reason: any) => {
+              Auth.signInWithEmailAndPassword(
+                values.email,
+                values.password
+              ).catch((reason: any) => {
                 setIsSnackBarOpen(!isSnackBarOpen);
                 setFormError(reason.message);
               }).finally(() => {
@@ -123,4 +121,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignIn;
