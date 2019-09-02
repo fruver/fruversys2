@@ -1,10 +1,8 @@
 import * as React from 'react';
-import * as firebase from 'firebase/app';
-import {User} from 'firebase/app';
-import 'firebase/auth';
+import Auth from '../resources/Auth';
 
 interface RootContext {
-  user?: User;
+  user?: any;
   isLoading?: boolean;
 }
 
@@ -19,18 +17,20 @@ export const useAuth = () => {
   const [authState, setAuthState] = React.useState<RootContext>({
     user: undefined,
     isLoading: true
-  })
+  });
 
   React.useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged(authUser=> {
+    const subscribe = Auth.onAuthStateChanged.subscribe((user: any) => {
       setAuthState({
-        user: authUser ? authUser : undefined,
+        user: user ? user : undefined,
         isLoading: false
       });
-      console.log(authUser);
+      console.log(`hook ${user}`);
     });
 
-    return unsubscribe;
+    return function cleanup() {
+      subscribe.unsubscribe();
+    };
   }, []);
 
   // Return the user object and auth methods

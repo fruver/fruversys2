@@ -49,10 +49,10 @@ const SignIn = () => {
   const [isSnackBarOpen, setIsSnackBarOpen] = React.useState(false);
   const [formError, setFormError] = React.useState(null);
 
-  if (user && !user.isAnonymous) {
-    console.log('Already loggedIn, redirect..');
-    return <Redirect to={RouteSummary} />;
-  }
+  // if (user) {
+  //   console.log('Already loggedIn, redirect..');
+  //   return <Redirect to={RouteSummary} />;
+  // }
 
   return (
     <MUIGrid className={classes.root} container justify='center' alignItems='center'>
@@ -76,10 +76,12 @@ const SignIn = () => {
             validationSchema={SignInSchema}
             validateOnBlur={false}
             onSubmit={(values, {setSubmitting}) => {
-              Auth.signInWithEmailAndPassword(
+              Auth.signIn(
                 values.email,
                 values.password
-              ).catch((reason: any) => {
+              ).then(() => {
+                console.log('success login')
+              }).catch((reason: any) => {
                 setIsSnackBarOpen(!isSnackBarOpen);
                 setFormError(reason.message);
               }).finally(() => {
