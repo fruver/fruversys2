@@ -11,7 +11,7 @@ import MUICardContent from '@material-ui/core/CardContent';
 import MUIButton from '@material-ui/core/Button';
 import MUISnackbar from '@material-ui/core/Snackbar';
 
-import Auth from '../resources/Auth';
+import {Auth} from '../services';
 import {useSession} from '../hooks/useAuth';
 import TextField from '../components/TextField';
 import {SUMMARY as RouteSummary} from '../constants/routes';

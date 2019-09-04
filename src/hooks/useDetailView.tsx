@@ -1,5 +1,5 @@
 import * as React from 'react';
-import CatAPI from '../resources/CatAPI';
+import {CatAPI} from '../services';
 
 const useDetailView = (url: string) => {
   const [isLoading, setIsLoading] = React.useState(true);

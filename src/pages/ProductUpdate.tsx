@@ -8,7 +8,7 @@ import MUIPaper from '@material-ui/core/Paper';
 import MUIButton from '@material-ui/core/Button';
 import MUIMenuItem from '@material-ui/core/MenuItem';
 
-import CatAPI from '../resources/CatAPI';
+import {CatAPI} from '../services';
 import Layout from '../components/Layout';
 import TextField from '../components/TextField';
 import {BrandProp, CategoryProp, ProductProp} from '../constants/types';

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Auth from '../resources/Auth';
+import {Auth} from '../services';
 
 interface RootContext {
   user?: any;

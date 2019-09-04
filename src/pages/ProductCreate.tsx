@@ -10,7 +10,7 @@ import Layout from '../components/Layout';
 import TextField from '../components/TextField';
 import {BrandProp, CategoryProp, ProductProp} from '../constants/types';
 import useOptions from '../hooks/useOptions';
-import CatAPI from '../resources/CatAPI';
+import {CatAPI} from '../services';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

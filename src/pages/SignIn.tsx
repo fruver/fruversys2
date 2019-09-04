@@ -11,10 +11,8 @@ import MUICardContent from '@material-ui/core/CardContent';
 import MUIButton from '@material-ui/core/Button';
 import MUISnackbar from '@material-ui/core/Snackbar';
 
-import Auth from '../resources/Auth';
-import {useSession} from '../hooks/useAuth';
+import {Auth} from '../services';
 import TextField from '../components/TextField';
-import {SUMMARY as RouteSummary} from '../constants/routes';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -45,7 +43,6 @@ const SignInSchema = Yup.object().shape({
 
 const SignIn = () => {
   const classes = useStyles();
-  const user = useSession();
   const [isSnackBarOpen, setIsSnackBarOpen] = React.useState(false);
   const [formError, setFormError] = React.useState(null);
 
@@ -80,7 +77,7 @@ const SignIn = () => {
                 values.email,
                 values.password
               ).then(() => {
-                console.log('success login')
+                console.log('success login');
               }).catch((reason: any) => {
                 setIsSnackBarOpen(!isSnackBarOpen);
                 setFormError(reason.message);

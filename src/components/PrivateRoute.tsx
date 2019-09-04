@@ -1,8 +1,5 @@
 import * as React from 'react';
 import {Route, Redirect, RouteProps} from 'react-router-dom';
-import {useSession} from '../hooks/useAuth';
-
-import Auth from '../resources/Auth';
 
 interface Props extends RouteProps {
   component?: any;
@@ -12,21 +9,20 @@ const PrivateRoute = ({
   component: Component,
   ...rest
 }: Props) => {
-  const user = false;
-
+  con user = true;
   return (
     <Route
       {...rest}
       render={props =>
         user ? (
+          <Component {...props} />
+        ) : (
           <Redirect
             to={{
-              pathname: '/login',
+              pathname: '/signin',
               state: {from: props.location}
             }}
           />
-        ) : (
-          <Component {...props} />
         )
       }
     />
