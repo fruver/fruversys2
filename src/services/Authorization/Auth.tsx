@@ -1,42 +1,49 @@
 import jwtDecode from 'jwt-decode';
+import { BehaviorSubject } from 'rxjs';
 import {DOMAIN_API} from '../../constants/routes';
-import AuthorDB, {Author} from './db';
+
+export interface Author {
+  token: string;
+  refresh: string;
+  uid: number;
+  exp: number;
+  jti: string;
+}
+
+export const signIn = async (email: string, password: string) => {
+  // Get token authorization
+  await this.fetchTokenAuth(email, password).then(resp => {
+    window.localStorage.setItem('auth', JSON.stringify(resp));
+    this._subject().next(resp);
+  });
+};
+
+export const signOut = () => {
+
+}
 
 class Auth  {
-  db: AuthorDB;
 
-  constructor() {
-    this.db = new AuthorDB();
-  }
-
-  public signIn = async (email: string, password: string) => {
+  signIn = async (email: string, password: string) => {
     // Get token authorization
-    const response: any = await this.fetchSignIn(email, password);
-    // Get user info
-    // const user = await this.fetchUser(auth.userId);
-
-    // Clear tables if exists
-    await this._clearAll();
-
-    // Store Authorization.
-    const tokenManager = await this.db.tokenManager.b(auth);
-
-    // test
-    console.log(tokenManager);
-    // console.log(tokenRefresh);
+    await this.fetchTokenAuth(email, password).then(resp => {
+      window.localStorage.setItem('auth', JSON.stringify(resp));
+      this._subject().next(resp);
+    });
   };
 
-  public signOut = async () => {
+  signOut = async () => {
     // Clear database if exists
-    return await this._clearAll();
+    window.localStorage.removeItem('auth');
   };
 
   ///////////
   // Helpers
   //////////
 
-  _clearAll = () => {
-    return this.db.tokenManager.clear();
+  onAuthStateChanged = () => {
+    // observable
+    return this._subject().asObservable();
   };
 
   isAuthenticated = () => {
@@ -50,56 +57,50 @@ class Auth  {
     //    un handle para verificar que el token es valido, de lo contrario.
     // 5. El servidor de authorization tendrá una API que aceptara el token "refresh"
     //    y verificara su validez y devolvera un token nuevo de accesso.
-    // 6. Una ves que el token "refresh" ha caducado se cerrara la sesión
+    // 6. Una ves que el token "refresh" ha caducado se cerrara la sesión.
+    const authorItem = window.localStorage.getItem('auth');
 
-
-    return this.db.tokenManager.toCollection().first().then( (item: Author|undefined) => {
-      const tokenAccessExpiredAt = item ? (item.exp * 1000) : NaN;
-      if (new Date().getTime() < tokenAccessExpiredAt) {
-        // renovar el access token, si el refresh token es valido.
-        return true;
-      }
-
-
-
+    if (authorItem) {
+      const expiredAt = JSON.parse(authorItem).exp * 1000;
       return new Date().getTime() < expiredAt;
-    });
+    } else {
+      return false;
+    }
   };
 
+  ///////////
+  // Private
+  //////////
 
-  // _isAuthenticated = async () => {
-  //   // const expiresAt = await this.currentAuth ? this.currentAuth.exp * 1000 : null;
-  //   const currentAuth = await this._currentAuth();
-  //
-  //   if (currentAuth) {
-  //     const expiresAt = currentAuth.exp * 1000;
-  //     return new Date().getTime() < expiresAt;
-  //   } else {
-  //     return false;
-  //   }
-  // };
+  _getAll = (): Author|null => {
+    const authorItem = window.localStorage.getItem('auth');
+    if (authorItem) return JSON.parse(authorItem);
+    return null;
+  };
 
-  // _accesstoken = () => {
-  //   const token = localForage.item
-  // }
+  _subject = () => {
+    return new BehaviorSubject(this._getAll());
+  }
 
   //////////////
   // Properties
   /////////////
 
-  // get isAuthenticated() {return this._isAuthenticated();}
-
   ///////////
   // Fetches
   //////////
 
-  fetchUser = async (userId: number) => {
-    return await this.fetch(`users/${userId}`, {
-      'method': 'GET'
-    }).then(user => {
-      return user;
-    }).catch(error => {
-      throw error;
+  fetchTokenAuth = async (email: string, password: string) => {
+    return await this.fetch('token-auth/', {
+      'method': 'POST',
+      'body': JSON.stringify({email, password})
+    }).then(resp => {
+      // Build Data for TokenAccess.
+      return {
+        token: resp.access,
+        refresh: resp.refresh,
+        ...jwtDecode(resp.access)
+      };
     });
   };
 
@@ -113,15 +114,13 @@ class Auth  {
     });
   };
 
-  fetchSignIn = async (email: string, password: string) => {
-    return await this.fetch('token-auth/', {
-      'method': 'POST',
-      'body': JSON.stringify({email, password})
-    }).then(resp => {
-      // Build Data for TokenAccess.
-      const tokenAccess = {token: resp.access, ...jwtDecode(resp.access)};
-      const tokenRefresh = {token: resp.refresh, ...jwtDecode(resp.refresh)};
-      return [tokenAccess, tokenRefresh];
+  fetchUser = async (userId: number) => {
+    return await this.fetch(`users/${userId}`, {
+      'method': 'GET'
+    }).then(user => {
+      return user;
+    }).catch(error => {
+      throw error;
     });
   };
 
@@ -130,10 +129,6 @@ class Auth  {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     };
-
-    //if(this.isAuthenticated()) {
-    //   headers['Autorization'] =
-    //}
 
     const response = await fetch(`${DOMAIN_API}/${path}`, {
       cache: 'default',

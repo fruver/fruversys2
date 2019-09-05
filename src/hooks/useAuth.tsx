@@ -20,12 +20,12 @@ export const useAuth = () => {
   });
 
   React.useEffect(() => {
-    const subscribe = Auth.onAuthStateChanged.subscribe((user: any) => {
+    const subscribe = Auth.currentUser.subscribe((user: any) => {
       setAuthState({
         user: user ? user : undefined,
         isLoading: false
       });
-      console.log(`hook ${user}`);
+      console.log(`hook ${JSON.stringify(user)}`);
     });
 
     return function cleanup() {

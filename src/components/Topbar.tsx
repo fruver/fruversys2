@@ -112,7 +112,7 @@ const Topbar = ({
         </MUIIconButton>
 
         {/* Signout */}
-        <MUIIconButton color="inherit">
+        <MUIIconButton color="inherit" onClick={() => Auth.signOut()}>
           <Icon icon={faSignOut} />
         </MUIIconButton>
       </MUIToolbar>
