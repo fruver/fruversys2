@@ -20,7 +20,7 @@ export const useAuth = () => {
   });
 
   React.useEffect(() => {
-    const subscribe = Auth.currentUser.subscribe((user: any) => {
+    const subscribe = Auth.onAuthStateChanged().subscribe((user: any) => {
       setAuthState({
         user: user ? user : undefined,
         isLoading: false

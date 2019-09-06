@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Route, Redirect, RouteProps} from 'react-router-dom';
-import {Auth} from '../services';
+// import {Auth} from '../services';
 
 interface Props extends RouteProps {
   component?: any;
@@ -10,11 +10,12 @@ const PrivateRoute = ({
   component: Component,
   ...rest
 }: Props) => {
+  const user = false;
   return (
     <Route
       {...rest}
       render={props =>
-        Auth.isAuthenticated() ? (
+        user ? (
           <Component {...props} />
         ) : (
           <Redirect

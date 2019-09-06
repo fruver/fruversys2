@@ -9,9 +9,9 @@ import Summary from './pages/Summary';
 import Faq from './pages/Faq';
 
 // Product Views
-import ProductList from './pages/ProductList';
-import ProductCreate from './pages/ProductCreate';
-import ProductUpdate from './pages/ProductUpdate';
+//import ProductList from './pages/ProductList';
+//import ProductCreate from './pages/ProductCreate';
+//import ProductUpdate from './pages/ProductUpdate';
 
 // Brand Views
 // import BrandList from './views/Brand/Table';
@@ -43,21 +43,21 @@ const Routes = () => {
       />
 
       {/* PRODUCTS */}
-      <PrivateRoute
-        component={ProductList}
-        path="/products"
-        exact
-      />
+      {/*<PrivateRoute*/}
+      {/*  component={ProductList}*/}
+      {/*  path="/products"*/}
+      {/*  exact*/}
+      {/*/>*/}
 
-      <PrivateRoute
-        component={ProductCreate}
-        path="/products/create"
-      />
+      {/*<PrivateRoute*/}
+      {/*  component={ProductCreate}*/}
+      {/*  path="/products/create"*/}
+      {/*/>*/}
 
-      <PrivateRoute
-        component={ProductUpdate}
-        path='/products/:id'
-      />
+      {/*<PrivateRoute*/}
+      {/*  component={ProductUpdate}*/}
+      {/*  path='/products/:id'*/}
+      {/*/>*/}
 
       {/* Brand Views */}
       {/* <PrivateRoute

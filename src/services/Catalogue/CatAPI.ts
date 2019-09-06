@@ -1,4 +1,4 @@
-import {DOMAIN_API} from '../../constants/routes';
+import {config} from '../../constants/routes';
 
 class CatAPI {
 
@@ -15,7 +15,7 @@ class CatAPI {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     };
-    const response = await fetch(`${DOMAIN_API}/${path}`, {
+    const response = await fetch(`${config.APIDOMAIN}/${path}`, {
       headers,
       ...options
     });

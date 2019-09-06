@@ -11,6 +11,7 @@ import MUICardContent from '@material-ui/core/CardContent';
 import MUIButton from '@material-ui/core/Button';
 import MUISnackbar from '@material-ui/core/Snackbar';
 
+import {useSession} from '../hooks/useAuth';
 import {Auth} from '../services';
 import TextField from '../components/TextField';
 
@@ -46,10 +47,13 @@ const SignIn = () => {
   const [isSnackBarOpen, setIsSnackBarOpen] = React.useState(false);
   const [formError, setFormError] = React.useState(null);
 
-  // if (user) {
-  //   console.log('Already loggedIn, redirect..');
-  //   return <Redirect to={RouteSummary} />;
-  // }
+  const user = useSession();
+  const test = Auth.currentUser();
+
+  if (user) {
+    console.log('Already loggedIn, redirect..');
+    //return <Redirect to='/' />;
+  }
 
   return (
     <MUIGrid className={classes.root} container justify='center' alignItems='center'>

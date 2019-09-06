@@ -14,7 +14,6 @@ import MUISnackbar from '@material-ui/core/Snackbar';
 import {Auth} from '../services';
 import {useSession} from '../hooks/useAuth';
 import TextField from '../components/TextField';
-import {SUMMARY as RouteSummary} from '../constants/routes';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -52,7 +51,7 @@ const SignUp = () => {
 
   if (user && !user.isAnonymous) {
     console.log('Already loggedIn, redirect..');
-    return <Redirect to={RouteSummary} />;
+    return <Redirect to='/' />;
   }
 
   return (

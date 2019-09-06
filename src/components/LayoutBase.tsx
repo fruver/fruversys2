@@ -7,7 +7,6 @@ import MUIDivider from '@material-ui/core/Divider';
 import Logo from './Logo';
 import Topbar from './Topbar';
 import Sidebar from './Sidebar';
-import {SUMMARY} from '../constants/routes';
 
 const drawerWidth = 240;
 
@@ -74,7 +73,7 @@ const LayoutBase = ({
       >
         {/* Logo */}
         <div className={styles.drawerLogo}>
-          <Link to={SUMMARY}>
+          <Link to='/'>
             <Logo className={styles.drawerLogoSvg} />
           </Link>
         </div>

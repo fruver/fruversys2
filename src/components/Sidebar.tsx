@@ -31,7 +31,7 @@ const NavItems: SideNavItemProp[] = [
     'id': 1,
     'labelName': 'Productos',
     'iconName': faScanner,
-    'urlName': routes.PRODUCT_LIST
+    'urlName': '/products/'
   }
 ];
 
