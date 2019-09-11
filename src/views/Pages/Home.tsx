@@ -1,7 +1,7 @@
 import * as React from 'react';
-import LayoutBase from '../components/LayoutBase';
+import LayoutBase from '../../components/LayoutBase';
 
-const Summary = () => {
+const Home = () => {
   const title = 'Panel';
 
   return (
@@ -11,4 +11,4 @@ const Summary = () => {
   );
 };
 
-export default Summary;
+export default Home;

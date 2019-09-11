@@ -23,7 +23,7 @@
     "indent": "off",
     "no-console": "off",
     "quotes": ["error", "single"],
-    "@typescript-eslint/semi": "error",
+    "@typescript-eslint/semi": ["error"],
     "@typescript-eslint/indent": ["error", 2],
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/explicit-function-return-type": "off",

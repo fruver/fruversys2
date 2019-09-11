@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {Route, Redirect, RouteProps} from 'react-router-dom';
-// import {Auth} from '../services';
 
 interface Props extends RouteProps {
   component?: any;
@@ -11,6 +10,7 @@ const PrivateRoute = ({
   ...rest
 }: Props) => {
   const user = false;
+
   return (
     <Route
       {...rest}
@@ -20,7 +20,7 @@ const PrivateRoute = ({
         ) : (
           <Redirect
             to={{
-              pathname: '/signin',
+              pathname: '/login',
               state: {from: props.location}
             }}
           />

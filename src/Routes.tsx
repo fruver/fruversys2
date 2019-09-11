@@ -3,10 +3,8 @@ import {Switch, Route} from 'react-router-dom';
 import PrivateRoute from './components/PrivateRoute';
 
 // Pages Basic
-import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
-import Summary from './pages/Summary';
-import Faq from './pages/Faq';
+import {Home, Faq} from './views/Pages';
+import {Login, Signup} from './views/User';
 
 // Product Views
 //import ProductList from './pages/ProductList';
@@ -22,18 +20,18 @@ const Routes = () => {
   return (
     <Switch>
       <PrivateRoute
-        component={Summary} 
+        component={Home} 
         path="/"
         exact
       />
 
       <Route
-        component={SignIn}
-        path="/signin"
+        component={Login}
+        path="/login"
       />
 
       <Route
-        component={SignUp}
+        component={Signup}
         path="/signup"
       />
 

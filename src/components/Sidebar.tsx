@@ -10,7 +10,6 @@ import MUIListItem from '@material-ui/core/ListItem';
 import MUIListItemIcon from '@material-ui/core/ListItemIcon';
 import MUIListItemText from '@material-ui/core/ListItemText';
 import {SideNavItemProp} from '../constants/types';
-import * as routes from '../constants/routes';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

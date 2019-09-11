@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as Yup from 'yup';
-import {Redirect} from 'react-router-dom';
 import {Formik, Form, Field} from 'formik';
 
 import {makeStyles, createStyles, Theme} from '@material-ui/core/styles';
@@ -11,9 +10,8 @@ import MUICardContent from '@material-ui/core/CardContent';
 import MUIButton from '@material-ui/core/Button';
 import MUISnackbar from '@material-ui/core/Snackbar';
 
-import {Auth} from '../services';
-import {useSession} from '../hooks/useAuth';
-import TextField from '../components/TextField';
+import {AuthContext} from '../../customer/context';
+import TextField from '../../components/TextField';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,26 +31,23 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const YupSchema = Yup.object().shape({
-  name: Yup.string().trim(),
+const SignInSchema = Yup.object().shape({
   email: Yup.string().trim()
     .email('El correo electronico ingresado no es válido.')
     .required('Este campo es obligatorio'),
   password: Yup.string()
     .required('Este campo es obligatorio')
-    .min(6, 'La contraseña debe tener minimo 6 caracteres')
+    .min(8, 'La contraseña debe tener minimo 8 caracteres')
 });
 
-const SignUp = () => {
+const Login = () => {
   const classes = useStyles();
-  const user = useSession();
-  const [isSnackBarOpen, setIsSnackBarOpen] = React.useState(false);
-  const [formError, setFormError] = React.useState(null);
+  const [{isLoading}, dispatch] = React.useContext(AuthContext);
 
-  if (user && !user.isAnonymous) {
-    console.log('Already loggedIn, redirect..');
-    return <Redirect to='/' />;
-  }
+  // const [isSnackBarOpen, setIsSnackBarOpen] = React.useState(false);
+  // const [formError, setFormError] = React.useState(null);
+
+  console.log(isLoading);
 
   return (
     <MUIGrid className={classes.root} container justify='center' alignItems='center'>
@@ -69,35 +64,35 @@ const SignUp = () => {
         />
       ) : null}
       <MUICard className={classes.card}>
-        <MUICardHeader className={classes.cardHeader} title='Crear cuenta' />
+        <MUICardHeader className={classes.cardHeader} title='Iniciar Sesión' />
         <MUICardContent>
           <Formik
-            initialValues={{fullName: '', email: '', password: ''}}
-            validationSchema={YupSchema}
+            initialValues={{email: 'andres@fruver.com', password: 'admin123'}}
+            validationSchema={SignInSchema}
             validateOnBlur={false}
             onSubmit={(values, {setSubmitting}) => {
-              Auth.createUserWithEmailAndPassword(
-                values.email, values.password
-              ).catch((reason: any) => {
-                setIsSnackBarOpen(!isSnackBarOpen);
-                setFormError(reason.message);
-              }).finally(() => {
-                setSubmitting(false);
-              });
+              console.log('send form');
+              dispatch();
+              // Auth.signIn(
+              //   values.email,
+              //   values.password
+              // ).then(() => {
+              //   console.log('success login');
+              // }).catch((reason: any) => {
+              //   setIsSnackBarOpen(!isSnackBarOpen);
+              //   setFormError(reason.message);
+              // }).finally(() => {
+              //   setSubmitting(false);
+              // });
             }}
           >
             {({isSubmitting}) => (
               <Form noValidate autoComplete='off'>
                 <Field
-                  name='fullName'
-                  label='Nombre'
-                  autoFocus
-                  component={TextField}
-                />
-                <Field
                   name='email'
                   label='Correo electrónico'
-                  component={TextField}
+                  autoFocus
+                  component={TextField} 
                 />
                 <Field
                   name='password'
@@ -114,15 +109,15 @@ const SignUp = () => {
                   disabled={isSubmitting}
                   fullWidth
                 >
-                  Crear cuenta
+                  Iniciar Sesión
                 </MUIButton>
               </Form>
             )}
           </Formik>
         </MUICardContent>
       </MUICard>
-    </MUIGrid>
+    </MUIGrid> 
   );
 };
 
-export default SignUp;
+export default Login;

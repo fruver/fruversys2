@@ -1,5 +1,5 @@
 import * as React from 'react';
-import LayoutBase from '../components/LayoutBase';
+import LayoutBase from '../../components/LayoutBase';
 
 const Faq = () => {
   const title = 'Faq';

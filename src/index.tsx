@@ -1,17 +1,21 @@
 import * as React from 'react';
-import ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom';
 import {BrowserRouter as Router} from 'react-router-dom';
-import App from './app';
 
-const AppRouter = () => {
-  return(
-    <Router>
-      <App />
-    </Router>
+import {AuthContext} from './customer/context';
+import Routes from './Routes';
+
+const App = () => {
+  return (
+    <AuthContext.Provider value={{}}>
+      <Router>
+        <Routes />
+      </Router>
+    </AuthContext.Provider>
   );
 };
 
 ReactDOM.render(
-  <AppRouter />,
+  <App />,
   document.getElementById('app')
 );
