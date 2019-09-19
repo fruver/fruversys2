@@ -27,12 +27,8 @@ export const logout = () => dispatch => {
   });
 };
 
-// export const token = () => dispatch => {
-//   let token;
-//   localForage.getItem('auth:user').then((value) => {
-//     dispatch({
-//       type: 'INSERT_TOKEN_SUCCESS',
-//       payload: value
-//     });
-//   });
-// }
+
+export const fetchProducts = () => (dispatch, getState) => {
+  const {user} = getState();
+
+};

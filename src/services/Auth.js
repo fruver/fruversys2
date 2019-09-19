@@ -1,10 +1,8 @@
-import localForage from 'localforage';
 import jwtDecode from 'jwt-decode';
-
 import {API_ROUTES} from '../constants/Routes';
 
 class Auth {
-  signIn = async (email, password) => {
+  TokenAuth = async (email, password) => {
     // Get token authorization
     const jwt = await this.fetch(API_ROUTES.TOKEN_AUTH, {
       method: 'POST',
@@ -25,31 +23,88 @@ class Auth {
 
     // Empaquetamos la información del usuario y del token
     // para pasarlo al storage.
-    // const data = {...user, authToken};
+    const data = {...user, ...jwt};
 
-    // localForage es una promesa mas por lo tanto
-    // la vamos a resolver por fuera de cualquier otra promesa.
-    const storage = localForage.setItem('auth:user', {
-      ...user,
-      ...jwt
-    }).then(() => {
-      return localForage.getItem('auth:user');
-    });
+    // Guardamos la data en localStorage
+    this.saveState(data);
 
-    // Retornamos el storage para que pueda ser usado
-    // luego como una promesa.
-    return storage;
+    // Debemos retornar un objecto serializado
+    // de lo que guardamos en localStorage
+    return this.loadState();
   };
 
-  signOut = () => {
+  TokenRefresh = async (refresh) => {
+    return this.fetch(API_ROUTES.TOKEN_REFRESH, {
+      method: 'POST',
+      body: JSON.stringify({refresh})
+    });
+  };
+
+  TokenRevoke = () => {
     // Eliminamos cualquier información persistente.
     // Debemos eliminar tambien de la store de redux.
-    return localForage.removeItem('auth:user');
+    return new Promise((resolve, reject) => {
+      this.rmState()
+      resolve('success');
+    });
+  };
+
+  User = async (uid) => {
+    return await this.fetch(
+      API_ROUTES.USERS + uid,
+      {
+        method: 'GET',
+        headers: {'Authorization': `Bearer ${jwt.access}`}
+      }
+    ).then(result => {
+      // Guardamos el result en localStorage
+      this.saveState(result);
+      return result;
+    });
   };
 
   ///////////
   // Helpers
   //////////
+
+  saveState = (state) => {
+    try {
+      const serializedState = JSON.stringify(state);
+      localStorage.setItem('auth', serializedState);
+    } catch (e) {
+      // ignore write errors
+      console.log('save state error', e);
+    }
+  };
+
+  loadState = () => {
+    try {
+      const serializedState = localStorage.getItem('auth');
+      if(serializedState === null) return undefined;
+      return JSON.parse(serializedState);
+    } catch (e) {
+      return undefined;
+    }
+  };
+
+  rmState = () => {
+    try {
+      localStorage.removeItem('auth');
+    } catch (e) {
+      // ignore write errors
+      console.log(e);
+    }
+  };
+
+  isTokenExpired = (token) => {
+    try {
+      const tokenDecode = jwtDecode(token);
+      const {exp: expiredAt} = tokenDecode.exp * 1000;
+      return new Date().getTime() >= expiredAt;
+    } catch(reason) {
+      return true;
+    }
+  };
 
   fetch = async (path, options) => {
     let headers = {
@@ -70,7 +125,7 @@ class Auth {
       // Raise an exception to reject the promise and trigger the outer .catch() handler.
       // By default, an error response status (4xx, 5xx) does NOT cause the promise to reject!
       // for security logout user and clear user.
-      localStorage.removeItem('auth:user');
+      this.removeAuthState();
       throw new Error(response.statusText);
     }).then( response => response.json());
   };

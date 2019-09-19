@@ -3,16 +3,29 @@ import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {BrowserRouter as Router} from 'react-router-dom';
 
+import Auth from './services/Auth';
 import Routes from './Routes';
 import configureStore from './redux/store';
 
-const store = configureStore();
+const preloadState = {
+  user: {
+    currentUser: Auth.loadState()
+  }
+};
+
+const store = configureStore(preloadState);
+
+const App = () => {
+  return (
+    <Provider store={store}>
+      <Router>
+        <Routes />
+      </Router>
+    </Provider>
+  );
+};
 
 ReactDOM.render(
-  <Provider store={store}>
-    <Router>
-      <Routes />
-    </Router>
-  </Provider>,
+  <App />,
   document.getElementById('app')
 );

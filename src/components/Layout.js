@@ -11,6 +11,7 @@ import {DASH_ROUTES} from '../constants/Routes';
 import Logo from './Logo';
 import Topbar from './Topbar';
 import Sidebar from './Sidebar';
+import Footer from './Footer';
 
 const drawerWidth = 240;
 
@@ -51,7 +52,7 @@ const useStyles = makeStyles((theme) =>
   }),
 );
 
-const LayoutBase = ({title, children}) => {
+const Layout = ({title, children}) => {
   const styles = useStyles();
 
   return (
@@ -85,11 +86,9 @@ const LayoutBase = ({title, children}) => {
   );
 };
 
-
-LayoutBase.propTypes = {
+Layout.propTypes = {
   title: PropTypes.string,
   children: PropTypes.any
 };
 
-
-export default LayoutBase;
+export default Layout;

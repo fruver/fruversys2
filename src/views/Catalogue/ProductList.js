@@ -1,11 +1,11 @@
 import React from 'react';
-import LayoutBase from '../../components/LayoutBase';
+import Layout from '../../components/Layout';
 
 const ProductList = () => {
   return (
-    <LayoutBase title="Product List">
+    <Layout title="Product List">
       Product List
-    </LayoutBase>
+    </Layout>
   );
 };
 

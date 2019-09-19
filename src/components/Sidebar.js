@@ -39,6 +39,19 @@ const AdapterLink = React.forwardRef((props, ref) => (
   />
 ));
 
+// const FilterLink = ({ filter, children }) => (
+//   <NavLink
+//     exact
+//     to={filter === 'SHOW_ALL' ? '/' : `/${filter}`}
+//     activeStyle={{
+//       textDecoration: 'none',
+//       color: 'black'
+//     }}
+//   >
+//     {children}
+//   </NavLink>
+// )
+
 const NavItems = [{
   labelName: 'Productos',
   iconName: faScanner,
@@ -47,12 +60,15 @@ const NavItems = [{
 
 const Sidebar = () => {
   const classes = useStyles();
-  const {user} = useSelector(store => store.user);
+  const {currentUser} = useSelector(store => store.user);
 
   return (
     <MUIList className={classes.root}>
       <MUIListItem>
-        <MUIListItemText primary={user.first_name} secondary={user.email} />
+        <MUIListItemText
+          primary={`Hola, ${currentUser.first_name}`}
+          secondary={currentUser.email}
+        />
       </MUIListItem>
       <MUIDivider />
       {NavItems.map(({labelName, iconName, urlName}) => (

@@ -13,5 +13,6 @@ export const USER_ROUTES = {
 export const API_ROUTES = {
   DOMAIN: process.env.API_DOMAIN || 'http://127.0.0.1:8000',
   TOKEN_AUTH: '/token-auth/',
+  TOKEN_REFRESH: '/token-refresh/',
   USERS: '/users/'
 };

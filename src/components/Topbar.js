@@ -15,7 +15,7 @@ import MUITypography from '@material-ui/core/Typography';
 import MUIIconButton from '@material-ui/core/IconButton';
 import MUIBadge from '@material-ui/core/Badge';
 
-import {logout} from '../redux/actions/authenticate';
+import {logout} from '../redux/action/userAction';
 
 const useStyles = makeStyles((theme) =>
   createStyles({

@@ -1,13 +1,13 @@
 import React from 'react';
-import LayoutBase from '../../components/LayoutBase';
+import Layout from '../../components/Layout';
 
 const Home = () => {
   const title = 'Panel';
 
   return (
-    <LayoutBase title={title}>
+    <Layout title={title}>
       {title}
-    </LayoutBase>
+    </Layout>
   );
 };
 

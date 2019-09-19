@@ -6,10 +6,10 @@ import {useSelector} from 'react-redux';
 import {USER_ROUTES} from './constants/Routes';
 
 const PrivateRoute = ({component: Component, ...otherProps}) => {
-  const {isAuthenticated} = useSelector(store => store.user);
+  const {currentUser} = useSelector(store => store.user);
 
   return (
-    <Route {...otherProps} render={props => isAuthenticated ? (
+    <Route {...otherProps} render={props => currentUser ? (
       <Component {...props} />
     ) : (
       <Redirect

@@ -12,8 +12,9 @@ import MUICardContent from '@material-ui/core/CardContent';
 import MUIButton from '@material-ui/core/Button';
 import MUISnackbar from '@material-ui/core/Snackbar';
 
-import {login} from '../../redux/actions/authenticate';
 import TextField from '../../components/TextField';
+import {DASH_ROUTES} from '../../constants/Routes';
+import {login} from '../../redux/action/userAction';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -45,14 +46,13 @@ const SignInSchema = Yup.object().shape({
 const Login = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const user = useSelector(store => store.user);
+  const {currentUser} = useSelector(store => store.user);
   // const [isSnackBarOpen, setIsSnackBarOpen] = React.useState(false);
   // const [formError, setFormError] = React.useState(null);
 
-  if(user.isAuthenticated) {
-    return <Redirect to='/' />;
+  if(currentUser) {
+    return <Redirect to={DASH_ROUTES.SUMMARY}/>;
   }
-
 
   return (
     <MUIGrid className={classes.root} container justify='center' alignItems='center'>
@@ -76,12 +76,13 @@ const Login = () => {
             validationSchema={SignInSchema}
             validateOnBlur={false}
             onSubmit={(values, {setSubmitting}) => {
-              dispatch(login(values.email, values.password)).then( () => {
-                console.log('success');
-              }).finally( () => {
-                console.log('setSubmitting to false');
-                setSubmitting(false);
-              });
+              dispatch(login(values.email, values.password));
+              // dispatch(login(values.email, values.password)).then( () => {
+              //   console.log('success');
+              // }).finally( () => {
+              //   console.log('setSubmitting to false');
+              //   setSubmitting(false);
+              // });
               // dispatch();
               // Auth.signIn(
               //   values.email,
