@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {BrowserRouter as Router} from 'react-router-dom';
 
-import Auth from './services/Auth';
+import API from './services/API';
 import Routes from './Routes';
 import configureStore from './redux/store';
 
 const preloadState = {
   user: {
-    currentUser: Auth.loadState()
+    currentUser: API.loadState()
   }
 };
 

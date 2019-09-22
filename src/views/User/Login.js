@@ -46,28 +46,28 @@ const SignInSchema = Yup.object().shape({
 const Login = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const {currentUser} = useSelector(store => store.user);
-  // const [isSnackBarOpen, setIsSnackBarOpen] = React.useState(false);
-  // const [formError, setFormError] = React.useState(null);
+  const {currentUser, error} = useSelector(store => store.user);
 
   if(currentUser) {
     return <Redirect to={DASH_ROUTES.SUMMARY}/>;
   }
 
+  console.log(error);
+
   return (
     <MUIGrid className={classes.root} container justify='center' alignItems='center'>
-      {/*{isSnackBarOpen ? (*/}
-      {/*  <MUISnackbar*/}
-      {/*    anchorOrigin={{*/}
-      {/*      vertical: 'top',*/}
-      {/*      horizontal: 'center'*/}
-      {/*    }}*/}
-      {/*    open={isSnackBarOpen}*/}
-      {/*    autoHideDuration={6000}*/}
-      {/*    onClose={() => setIsSnackBarOpen(!isSnackBarOpen)}*/}
-      {/*    message={formError}*/}
-      {/*  />*/}
-      {/*) : null}*/}
+      {error ? (
+        <MUISnackbar
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'center'
+          }}
+          open={true}
+          autoHideDuration={6000}
+          onClose={() => false}
+          message={error}
+        />
+      ) : null}
       <MUICard className={classes.card}>
         <MUICardHeader className={classes.cardHeader} title='Iniciar Sesión' />
         <MUICardContent>
@@ -76,25 +76,9 @@ const Login = () => {
             validationSchema={SignInSchema}
             validateOnBlur={false}
             onSubmit={(values, {setSubmitting}) => {
-              dispatch(login(values.email, values.password));
-              // dispatch(login(values.email, values.password)).then( () => {
-              //   console.log('success');
-              // }).finally( () => {
-              //   console.log('setSubmitting to false');
-              //   setSubmitting(false);
-              // });
-              // dispatch();
-              // Auth.signIn(
-              //   values.email,
-              //   values.password
-              // ).then(() => {
-              //   console.log('success login');
-              // }).catch((reason: any) => {
-              //   setIsSnackBarOpen(!isSnackBarOpen);
-              //   setFormError(reason.message);
-              // }).finally(() => {
-              //   setSubmitting(false);
-              // });
+              dispatch(login(values.email, values.password)).finally(() => {
+                setSubmitting(false);
+              });
             }}
           >
             {({isSubmitting}) => (
@@ -103,7 +87,7 @@ const Login = () => {
                   name='email'
                   label='Correo electrónico'
                   autoFocus
-                  component={TextField} 
+                  component={TextField}
                 />
                 <Field
                   name='password'
@@ -127,7 +111,7 @@ const Login = () => {
           </Formik>
         </MUICardContent>
       </MUICard>
-    </MUIGrid> 
+    </MUIGrid>
   );
 };
 

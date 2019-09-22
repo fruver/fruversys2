@@ -1,7 +1,7 @@
 import jwtDecode from 'jwt-decode';
 import {API_ROUTES} from '../constants/Routes';
 
-class Auth {
+class API {
   TokenAuth = async (email, password) => {
     // Get token authorization
     const jwt = await this.fetch(API_ROUTES.TOKEN_AUTH, {
@@ -125,10 +125,12 @@ class Auth {
       // Raise an exception to reject the promise and trigger the outer .catch() handler.
       // By default, an error response status (4xx, 5xx) does NOT cause the promise to reject!
       // for security logout user and clear user.
-      this.removeAuthState();
-      throw new Error(response.statusText);
+      this.rmState();
+      const error = new Error(response.statusText);
+      error.response = response;
+      throw error;
     }).then( response => response.json());
   };
 }
 
-export default new Auth();
+export default new API();

@@ -1,4 +1,11 @@
-import {USER_ACTION} from '../../constants/ActionTypes';
+import {
+  TOKEN_AUTH_REQUEST,
+  TOKEN_AUTH_SUCCESS,
+  TOKEN_AUTH_FAILURE,
+  TOKEN_REVOKE_REQUEST,
+  TOKEN_REVOKE_SUCCESS,
+  TOKEN_REVOKE_FAILURE
+} from '../action/userAction';
 
 export const initialState = {
   currentUser: null,
@@ -8,19 +15,38 @@ export const initialState = {
 
 const reducer = (state=initialState, action) => {
   switch (action.type) {
-    case USER_ACTION.USER_REQUEST:
+    case TOKEN_AUTH_REQUEST:
       return {
         ...state,
         isLoading: true
       };
-    case USER_ACTION.USER_SUCCESS:
+    case TOKEN_AUTH_SUCCESS:
       return {
         ...state,
         currentUser: action.payload
       };
-    case USER_ACTION.USER_FAILURE:
+    case TOKEN_AUTH_FAILURE:
       return {
         ...state,
+        isLoading: false,
+        currentUser: null,
+        error: action.payload
+      };
+    case TOKEN_REVOKE_REQUEST:
+      return {
+        ...state,
+        isLoading: true
+      };
+    case TOKEN_REVOKE_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        currentUser: null
+      };
+    case TOKEN_REVOKE_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
         error: action.payload
       };
     default:
