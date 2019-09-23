@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import PropType from 'prop-types';
 
 import {makeStyles, createStyles} from '@material-ui/core/styles';
 import MUIPaper from '@material-ui/core/Paper';
@@ -11,6 +10,9 @@ import MUITableCell from '@material-ui/core/TableCell';
 
 import TableToolbar from './TableToolbar';
 import TableHead from './TableHead';
+
+// Types
+import type {Column} from './TableHead';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -46,23 +48,31 @@ const useStyles = makeStyles((theme) =>
 const Table = (props: {
   title: string,
   dense: boolean,
-  columns: Array[],
-  data: []
+  fieldOrderBy: string,
+  columns: Array<Column>
 }) => {
+  const {title, dense, fieldOrderBy, columns} = props;
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState(); // field
-  const [selected, setSelected] = React.useState(0);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-  const {title, columns} = props;
+  const [orderBy, setOrderBy] = React.useState(fieldOrderBy); // field
+  const [selected, setSelected] = React.useState([]);
+  //const [page, setPage] = React.useState(0);
+  //const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {
     const isDesc = orderBy === property && order === 'desc';
     setOrder(isDesc ? 'asc' : 'desc');
     setOrderBy(property);
+  };
+
+  const handleSelectAllClick = (event) => {
+    if(event.target.checked) {
+      // rows data
+      const newSelects = [];
+      setSelected(newSelects);
+      return;
+    }
+    setSelected([]);
   };
 
   return (
@@ -86,7 +96,7 @@ const Table = (props: {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={0}
             />
           </MUITable>
         </div>

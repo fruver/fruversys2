@@ -8,16 +8,16 @@ import MUITableRow from '@material-ui/core/TableRow';
 import MUITableCell from '@material-ui/core/TableCell';
 import MUITableSortLabel from '@material-ui/core/TableSortLabel';
 
-export type Column = {
+export type Column = $ReadOnly<{
   title: string,
   field: string,
   type?: 'boolean' | 'numeric' | 'date' | 'datetime' | 'time' | 'currency',
   disablePadding?: boolean
-}
+}>
 
-const TableHead = (props : {
+const TableHead = (props: {
   classes: Object,
-  columns: [Column],
+  columns: Array<Column>,
   onSelectAllClick: Function,
   order: string,
   orderBy: string,

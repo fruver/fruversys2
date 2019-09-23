@@ -23,6 +23,7 @@ const ProductList = () => {
       <Table
         title={title}
         columns={columns}
+        fieldOrderBy='Ref'
       />
     </Layout>
   );

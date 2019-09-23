@@ -1,18 +1,28 @@
+// @flow
 import React from 'react';
+import clsx from 'clsx';
+import uuidv4 from 'uuid';
+import {NavLink, withRouter} from 'react-router-dom';
+import type {RouteComponentProps} from 'react-dom';
 import {useSelector} from 'react-redux';
-import {NavLink} from 'react-router-dom';
 
 import {FontAwesomeIcon as Icon} from '@fortawesome/react-fontawesome';
-import {faScanner} from '@fortawesome/pro-duotone-svg-icons';
+import type {IconProps} from '@fortawesome/fontawesome-svg-core';
+import {
+  faScanner,
+  faChevronUp,
+  faChevronDown
+} from '@fortawesome/pro-duotone-svg-icons';
 
 import {makeStyles, createStyles} from '@material-ui/core/styles';
 import MUIList from '@material-ui/core/List';
 import MUIListItem from '@material-ui/core/ListItem';
 import MUIListItemIcon from '@material-ui/core/ListItemIcon';
 import MUIListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider/Divider';
+import Collapse from '@material-ui/core/Collapse';
 
 import {DASH_ROUTES} from '../constants/Routes';
-import MUIDivider from '@material-ui/core/Divider/Divider';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -22,45 +32,121 @@ const useStyles = makeStyles((theme) =>
       backgroundColor: theme.palette.background.paper,
       padding: 0,
     },
+    nested: {
+      paddingLeft: theme.spacing(4),
+    },
     activeListItem: {
       backgroundColor: theme.palette.action.selected
     }
   }),
 );
 
-// eslint-disable-next-line react/display-name
-const AdapterLink = React.forwardRef((props, ref) => (
-  <NavLink
-    innerRef={ref}
-    activeStyle={{
-      backgroundColor: '#ddd'
-    }}
-    {...props}
-  />
-));
+type ItemProp = {|
+  labelName: string,
+  urlName: string
+|}
 
-// const FilterLink = ({ filter, children }) => (
-//   <NavLink
-//     exact
-//     to={filter === 'SHOW_ALL' ? '/' : `/${filter}`}
-//     activeStyle={{
-//       textDecoration: 'none',
-//       color: 'black'
-//     }}
-//   >
-//     {children}
-//   </NavLink>
-// )
+type ListItemProps = {|
+  labelName: string,
+  urlName: IconProps,
+  iconName: mixed,
+  items: Array<ItemProp>
+|}
 
-const NavItems = [{
-  labelName: 'Productos',
-  iconName: faScanner,
-  urlName: DASH_ROUTES.PRODUCTS
-}];
+const NavItems: Array<ListItemProps> = [
+  {
+    labelName: 'Catalogo',
+    iconName: faScanner,
+    urlName: DASH_ROUTES.CATALOGUE,
+    items: [
+      {
+        labelName: 'Productos',
+        urlName: DASH_ROUTES.PRODUCTS
+      },
+      {
+        labelName: 'Departamentos',
+        urlName: DASH_ROUTES.CATEGORY
+      },
+      {
+        labelName: 'Marca',
+        urlName: DASH_ROUTES.BRANDS
+      }
+    ]
+  }
+];
 
-const Sidebar = () => {
+const ListItem = (props: {
+  rowItem: ListItemProps,
+  isOpen?: boolean,
+  location: any,
+  match: any
+}) => {
+  const classes = useStyles();
+  const {rowItem, isOpen, location, match} = props;
+  const [open, setOpen] = React.useState(false);
+
+  // eslint-disable-next-line react/display-name
+  // const renderLink = React.forwardRef((props, ref) => (
+  //   //   <NavLink {...props} innerRef={ref} />
+  //   // ));
+
+  const renderLink = React.useMemo(
+    () =>
+      // eslint-disable-next-line react/display-name
+      React.forwardRef((props, ref) => (
+        <NavLink {...props} innerRef={ref} />
+      )),
+    ['/catalogue/products'],
+  );
+
+  const setOpenValue = () => {
+    console.log(location);
+  };
+
+  console.log(location);
+  console.log(match);
+
+  return (
+    <React.Fragment>
+      {rowItem && rowItem.items ? (
+        <React.Fragment>
+          <MUIListItem
+            onClick={() => setOpen(!open)}
+            button={true}
+            key={uuidv4()}
+          >
+            <MUIListItemIcon>
+              <Icon icon={rowItem.iconName} />
+            </MUIListItemIcon>
+            <MUIListItemText primary={rowItem.labelName} />
+            {open ? <Icon icon={faChevronUp} /> : <Icon icon={faChevronDown} />}
+          </MUIListItem>
+          <Collapse in={open} timeout="auto">
+            <MUIList component="div" disablePadding>
+              {rowItem.items.map(({labelName, urlName}) =>
+                <MUIListItem
+                  button
+                  to={urlName}
+                  key={uuidv4()}
+                >
+                  <MUIListItemText primary={labelName} />
+                </MUIListItem>
+              )}
+            </MUIList>
+          </Collapse>
+        </React.Fragment>
+      ) : null}
+    </React.Fragment>
+  );
+};
+
+const Sidebar = (props) => {
   const classes = useStyles();
   const {currentUser} = useSelector(store => store.user);
+
+  const [open, setOpen] = React.useState(false);
+
+  const rowItem = NavItems[0];
 
   return (
     <MUIList className={classes.root}>
@@ -70,23 +156,18 @@ const Sidebar = () => {
           secondary={currentUser.email}
         />
       </MUIListItem>
-      <MUIDivider />
-      {NavItems.map(({labelName, iconName, urlName}) => (
-        <MUIListItem
-          button={true}
-          classes={{selected: classes.activeListItem}}
-          component={AdapterLink}
-          to={urlName}
-          key={labelName}
-        >
-          <MUIListItemIcon>
-            <Icon icon={iconName} />
-          </MUIListItemIcon>
-          <MUIListItemText primary={labelName} />
-        </MUIListItem>
-      ))}
+
+      <Divider />
+
+      {NavItems.map(rowItem =>
+        <ListItem
+          {...props}
+          rowItem={rowItem}
+          key={uuidv4()}
+        />
+      )}
     </MUIList>
   );
 };
 
-export default Sidebar;
+export default withRouter(Sidebar);

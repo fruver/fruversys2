@@ -10,11 +10,13 @@
   },
   "plugins": [
     "react",
-    "react-hooks"
+    "react-hooks",
+    "flowtype"
   ],
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "plugin:flowtype/recommended"
   ],
   "rules": {
     "indent": ["error", 2, {"SwitchCase":  1}],
