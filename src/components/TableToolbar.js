@@ -1,5 +1,5 @@
-// @flow
 import React from 'react';
+import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
 import {lighten, makeStyles} from '@material-ui/core/styles';
@@ -31,10 +31,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const TableToolbar = (props: {
-  numSelected: number,
-  title: string
-}) => {
+const TableToolbar = (props) => {
   const classes = useStyles();
   const {numSelected, title} = props;
 
@@ -73,6 +70,11 @@ const TableToolbar = (props: {
       </div>
     </Toolbar>
   );
+};
+
+TableToolbar.propTypes = {
+  title: PropTypes.string.isRequired,
+  numSelected: PropTypes.number.isRequired
 };
 
 export default TableToolbar;

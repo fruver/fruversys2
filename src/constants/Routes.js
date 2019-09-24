@@ -1,16 +1,13 @@
-export const DASH_ROUTES = {
+export const ROUTES = {
   SUMMARY: '/',
+  SIGNIN: '/sigin',
+  SIGNUP: '/signup',
+  SIGNOUT: '/signout',
   FAQ: '/faq',
   CATALOGUE: '/catalogue',
   PRODUCTS: '/catalogue/products',
   CATEGORY: '/catalogue/category',
-  BRANDS: '/catalogue/brands'
-};
-
-export const USER_ROUTES = {
-  SIGNIN: '/sigin',
-  SIGNUP: '/signup',
-  SIGNOUT: '/signout'
+  BRANDS: '/catalogue/brands',
 };
 
 export const API_ROUTES = {

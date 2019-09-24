@@ -1,5 +1,5 @@
-// @flow
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {makeStyles, createStyles} from '@material-ui/core/styles';
 import MUIPaper from '@material-ui/core/Paper';
@@ -11,10 +11,7 @@ import MUITableCell from '@material-ui/core/TableCell';
 import TableToolbar from './TableToolbar';
 import TableHead from './TableHead';
 
-// Types
-import type {Column} from './TableHead';
-
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(theme =>
   createStyles({
     root: {
       width: '100%',
@@ -45,12 +42,7 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-const Table = (props: {
-  title: string,
-  dense: boolean,
-  fieldOrderBy: string,
-  columns: Array<Column>
-}) => {
+const Table = (props) => {
   const {title, dense, fieldOrderBy, columns} = props;
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
@@ -103,6 +95,13 @@ const Table = (props: {
       </MUIPaper>
     </div>
   );
+};
+
+Table.propTypes = {
+  title: PropTypes.string,
+  dense: PropTypes.bool,
+  fieldOrderBy: PropTypes.string,
+  columns: TableHead.propTypes.columns
 };
 
 export default Table;

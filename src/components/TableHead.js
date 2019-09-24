@@ -1,5 +1,5 @@
-// @flow
 import React from 'react';
+import PropTypes from 'prop-types';
 import uuidv4 from 'uuid/v4';
 
 import Checkbox from '@material-ui/core/Checkbox';
@@ -8,23 +8,7 @@ import MUITableRow from '@material-ui/core/TableRow';
 import MUITableCell from '@material-ui/core/TableCell';
 import MUITableSortLabel from '@material-ui/core/TableSortLabel';
 
-export type Column = $ReadOnly<{
-  title: string,
-  field: string,
-  type?: 'boolean' | 'numeric' | 'date' | 'datetime' | 'time' | 'currency',
-  disablePadding?: boolean
-}>
-
-const TableHead = (props: {
-  classes: Object,
-  columns: Array<Column>,
-  onSelectAllClick: Function,
-  order: string,
-  orderBy: string,
-  numSelected: number,
-  rowCount: number,
-  onRequestSort: Function
-}) => {
+const TableHead = (props) => {
   const {
     classes,
     columns,
@@ -76,5 +60,29 @@ const TableHead = (props: {
     </MUITableHead>
   );
 };
+
+TableHead.propTypes = {
+  classes: PropTypes.object,
+  columns: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      field: PropTypes.string.isRequired,
+      type: PropTypes.oneOf([
+        'boolean',
+        'numeric',
+        'date',
+        'datetime',
+        'time',
+        'currency'
+      ])
+    })
+  ),
+  onSelectAllClick: PropTypes.func.isRequired,
+  order: PropTypes.oneOf(['asc', 'desc']),
+  orderBy: PropTypes.string.isRequired,
+  numSelected: PropTypes.number.isRequired,
+  rowCount: PropTypes.number.isRequired,
+  onRequestSort: PropTypes.func.isRequired
+}
 
 export default TableHead;

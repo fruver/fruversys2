@@ -1,18 +1,12 @@
-// @flow
 import React from 'react';
+import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import uuidv4 from 'uuid';
 import {NavLink, withRouter} from 'react-router-dom';
-import type {RouteComponentProps} from 'react-dom';
 import {useSelector} from 'react-redux';
 
 import {FontAwesomeIcon as Icon} from '@fortawesome/react-fontawesome';
-import type {IconProps} from '@fortawesome/fontawesome-svg-core';
-import {
-  faScanner,
-  faChevronUp,
-  faChevronDown
-} from '@fortawesome/pro-duotone-svg-icons';
+import {faScanner, faChevronUp, faChevronDown} from '@fortawesome/pro-duotone-svg-icons';
 
 import {makeStyles, createStyles} from '@material-ui/core/styles';
 import MUIList from '@material-ui/core/List';
@@ -22,9 +16,9 @@ import MUIListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider/Divider';
 import Collapse from '@material-ui/core/Collapse';
 
-import {DASH_ROUTES} from '../constants/Routes';
+import {ROUTES} from '../constants/Routes';
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(theme =>
   createStyles({
     root: {
       width: '100%',
@@ -41,48 +35,30 @@ const useStyles = makeStyles((theme) =>
   }),
 );
 
-type ItemProp = {|
-  labelName: string,
-  urlName: string
-|}
-
-type ListItemProps = {|
-  labelName: string,
-  urlName: IconProps,
-  iconName: mixed,
-  items: Array<ItemProp>
-|}
-
-const NavItems: Array<ListItemProps> = [
+const NavItems = [
   {
     labelName: 'Catalogo',
     iconName: faScanner,
-    urlName: DASH_ROUTES.CATALOGUE,
     items: [
       {
         labelName: 'Productos',
-        urlName: DASH_ROUTES.PRODUCTS
+        urlName: ROUTES.PRODUCTS
       },
       {
         labelName: 'Departamentos',
-        urlName: DASH_ROUTES.CATEGORY
+        urlName: ROUTES.CATEGORY
       },
       {
-        labelName: 'Marca',
-        urlName: DASH_ROUTES.BRANDS
+        labelName: 'Marcas',
+        urlName: ROUTES.BRANDS
       }
     ]
   }
 ];
 
-const ListItem = (props: {
-  rowItem: ListItemProps,
-  isOpen?: boolean,
-  location: any,
-  match: any
-}) => {
+const ListItem = (props) => {
   const classes = useStyles();
-  const {rowItem, isOpen, location, match} = props;
+  const {rowItem, location, match} = props;
   const [open, setOpen] = React.useState(false);
 
   // eslint-disable-next-line react/display-name
@@ -90,14 +66,14 @@ const ListItem = (props: {
   //   //   <NavLink {...props} innerRef={ref} />
   //   // ));
 
-  const renderLink = React.useMemo(
-    () =>
-      // eslint-disable-next-line react/display-name
-      React.forwardRef((props, ref) => (
-        <NavLink {...props} innerRef={ref} />
-      )),
-    ['/catalogue/products'],
-  );
+  // const renderLink = React.useMemo(
+  //   () =>
+  //     // eslint-disable-next-line react/display-name
+  //     React.forwardRef((props, ref) => (
+  //       <NavLink {...props} innerRef={ref} />
+  //     )),
+  //   ['/catalogue/products'],
+  // );
 
   const setOpenValue = () => {
     console.log(location);
@@ -140,13 +116,16 @@ const ListItem = (props: {
   );
 };
 
+ListItem.propTypes = {
+  rowItem: PropTypes.arrayOf(PropTypes.object).isRequired,
+  match: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
+};
+
 const Sidebar = (props) => {
   const classes = useStyles();
   const {currentUser} = useSelector(store => store.user);
-
-  const [open, setOpen] = React.useState(false);
-
-  const rowItem = NavItems[0];
 
   return (
     <MUIList className={classes.root}>

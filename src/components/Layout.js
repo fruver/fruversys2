@@ -7,15 +7,14 @@ import MUICssBaseline from '@material-ui/core/CssBaseline';
 import MUIDrawer from '@material-ui/core/Drawer';
 import MUIDivider from '@material-ui/core/Divider';
 
-import {DASH_ROUTES} from '../constants/Routes';
 import Logo from './Logo';
 import Topbar from './Topbar';
 import Sidebar from './Sidebar';
-import Footer from './Footer';
+import {ROUTES} from '../constants/Routes';
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(theme =>
   createStyles({
     root: {
       display: 'flex',
@@ -53,24 +52,24 @@ const useStyles = makeStyles((theme) =>
 );
 
 const Layout = ({title, children}) => {
-  const styles = useStyles();
+  const classes = useStyles();
 
   return (
-    <div className={styles.root}><MUICssBaseline />
+    <div className={classes.root}><MUICssBaseline />
       <Topbar
-        className={styles.appBar}
+        className={classes.appBar}
         title={title}
       />
       <MUIDrawer
-        className={styles.drawer}
+        className={classes.drawer}
         anchor="left"
         variant="permanent"
-        classes={{paper: styles.drawerPaper}}
+        classes={{paper: classes.drawerPaper}}
       >
         {/* Logo */}
-        <div className={styles.drawerLogo}>
-          <Link to={DASH_ROUTES.SUMMARY}>
-            <Logo className={styles.drawerLogoSvg} />
+        <div className={classes.drawerLogo}>
+          <Link to={ROUTES.SUMMARY}>
+            <Logo className={classes.drawerLogoSvg} />
           </Link>
         </div>
         {/* Divider */}
@@ -78,8 +77,8 @@ const Layout = ({title, children}) => {
         {/* Sidebar */}
         <Sidebar />
       </MUIDrawer>
-      <main className={styles.content}>
-        <div className={styles.toolbar} />
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
         {children}
       </main>
     </div>
@@ -87,8 +86,8 @@ const Layout = ({title, children}) => {
 };
 
 Layout.propTypes = {
-  title: PropTypes.string,
-  children: PropTypes.any
+  title: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired
 };
 
 export default Layout;
