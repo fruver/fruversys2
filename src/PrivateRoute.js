@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Route, Redirect} from 'react-router-dom';
 
 import {useSelector} from 'react-redux';
-import {USER_ROUTES} from './constants/Routes';
+import {ROUTES} from './constants/Routes';
 
 const PrivateRoute = ({component: Component, ...otherProps}) => {
   const {currentUser} = useSelector(store => store.user);
@@ -14,7 +14,7 @@ const PrivateRoute = ({component: Component, ...otherProps}) => {
     ) : (
       <Redirect
         to={{
-          pathname: USER_ROUTES.SIGNIN,
+          pathname: ROUTES.SIGNIN,
           state: {from: props.location}
         }}
       />

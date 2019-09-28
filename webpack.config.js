@@ -10,12 +10,14 @@ const envKeys = Object.keys(dotEnv).reduce((prev, next) => {
 }, {});
 
 module.exports = {
-  context: __dirname,
+
+  mode: 'development',
+
   entry: './src/index.js',
+
   output: {
     path: path.join(__dirname, 'dist'),
-    publicPath: '/',
-    filename: 'bundle.js'
+    filename: 'assets/bundle.js'
   },
 
   resolve: {
@@ -28,13 +30,13 @@ module.exports = {
   devtool: 'source-map',
 
   devServer: {
-    port: 9001,
+    //host: '0.0.0.0',
+    port: 9000,
     hot: true,
-    inline: true,
+    inline: false,
     compress: true,
     watchContentBase: true,
-    historyApiFallback: true,
-    contentBase: path.join(__dirname, 'dist')
+    historyApiFallback: true
   },
 
   module: {
@@ -52,7 +54,7 @@ module.exports = {
     new CleanWebpackPlugin(),
     new HTMLWebpackPlugin({
       title: 'Fruver System Manager',
-      template: './src/index.ejs'
+      template: './src/index.html'
     })
   ]
 };

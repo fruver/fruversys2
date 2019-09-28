@@ -4,11 +4,15 @@ import {
   TOKEN_AUTH_FAILURE,
   TOKEN_REVOKE_REQUEST,
   TOKEN_REVOKE_SUCCESS,
-  TOKEN_REVOKE_FAILURE
+  TOKEN_REVOKE_FAILURE,
+  USER_REQUEST,
+  USER_SUCCESS,
+  USER_FAILURE
 } from '../action/userAction';
 
 export const initialState = {
-  currentUser: null,
+  currentUser: undefined,
+  token: undefined,
   error: null,
   isLoading: false
 };
@@ -23,14 +27,14 @@ const reducer = (state=initialState, action) => {
     case TOKEN_AUTH_SUCCESS:
       return {
         ...state,
-        currentUser: action.payload
+        isLoading: false,
+        token: action.response
       };
     case TOKEN_AUTH_FAILURE:
       return {
         ...state,
         isLoading: false,
-        currentUser: null,
-        error: action.payload
+        error: action.error
       };
     case TOKEN_REVOKE_REQUEST:
       return {
@@ -41,13 +45,30 @@ const reducer = (state=initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        currentUser: null
+        currentUser: undefined
       };
     case TOKEN_REVOKE_FAILURE:
       return {
         ...state,
         isLoading: false,
-        error: action.payload
+        error: action.error
+      };
+    case USER_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case USER_SUCCESS:
+      return {
+        ...state,
+        currentUser: action.response,
+        isLoading: false,
+      };
+    case USER_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.error
       };
     default:
       return state;

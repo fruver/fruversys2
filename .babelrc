@@ -4,6 +4,7 @@
       "@babel/preset-env",
       {
         "targets": {
+          "electron": "6.0.10",
           "node": "current"
         }
       }

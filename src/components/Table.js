@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import uuid from 'uuid/v4';
 
 import {makeStyles, createStyles} from '@material-ui/core/styles';
 import MUIPaper from '@material-ui/core/Paper';
@@ -10,6 +11,7 @@ import MUITableCell from '@material-ui/core/TableCell';
 
 import TableToolbar from './TableToolbar';
 import TableHead from './TableHead';
+import {Checkbox} from '@material-ui/core';
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -42,14 +44,38 @@ const useStyles = makeStyles(theme =>
   })
 );
 
+const desc = (a, b, orderBy) => {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
+};
+
+const stableSort = (array, cmp) => {
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  stabilizedThis.sort((a, b) => {
+    const order = cmp(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+  return stabilizedThis.map(el => el[0]);
+};
+
+const getSorting = (order, orderBy) => {
+  return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
+}
+
 const Table = (props) => {
-  const {title, dense, fieldOrderBy, columns} = props;
+  const {title, dense, fieldOrderBy, columns, data} = props;
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState(fieldOrderBy); // field
   const [selected, setSelected] = React.useState([]);
-  //const [page, setPage] = React.useState(0);
-  //const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {
     const isDesc = orderBy === property && order === 'desc';
@@ -60,12 +86,33 @@ const Table = (props) => {
   const handleSelectAllClick = (event) => {
     if(event.target.checked) {
       // rows data
-      const newSelects = [];
+      const newSelects = data.map(n => n.name);
       setSelected(newSelects);
       return;
     }
     setSelected([]);
   };
+
+  const handleClick = (event, name) => {
+    const selectedIndex = selected.indexOf(name);
+    let newSelected = [];
+
+    if(selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, name);
+    } else if(selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if(selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if(selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
+    setSelected(newSelected);
+  };
+
+  const isSelected = name => selected.indexOf(name) !== -1;
 
   return (
     <div className={classes.root}>
@@ -90,6 +137,34 @@ const Table = (props) => {
               onRequestSort={handleRequestSort}
               rowCount={0}
             />
+            <MUITableBody>
+              {stableSort(data, getSorting(order, orderBy))
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row, index) => {
+                  const isItemSelected = isSelected(row.name);
+                  const labelId = `enhanced-table-checkbox-${index}`;
+
+                  return (
+                    <MUITableRow
+                      hover={true}
+                      onClick={event => handleClick(event, row.name)}
+                      role="checkbox"
+                      aria-checked={isItemSelected}
+                      tabIndex={-1}
+                      key={uuid()}
+                      selected={isItemSelected}
+                    >
+                      <MUITableCell padding="checkbox">
+                        <Checkbox
+                          checked={isItemSelected}
+                          inputProps={{'aria-labelledby': labelId}}
+                        />
+                      </MUITableCell>
+                    </MUITableRow>
+                  );
+                })
+              }
+            </MUITableBody>
           </MUITable>
         </div>
       </MUIPaper>
@@ -98,10 +173,11 @@ const Table = (props) => {
 };
 
 Table.propTypes = {
-  title: PropTypes.string,
+  title: PropTypes.string.isRequired,
   dense: PropTypes.bool,
   fieldOrderBy: PropTypes.string,
-  columns: TableHead.propTypes.columns
+  columns: TableHead.propTypes.columns.isRequired,
+  data: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default Table;

@@ -3,15 +3,17 @@ import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {BrowserRouter as Router} from 'react-router-dom';
 
-import API from './services/API';
+import Auth from './services/Auth';
 import Routes from './Routes';
 import configureStore from './redux/store';
 
 const preloadState = {
   user: {
-    currentUser: API.loadState()
+    currentUser: Auth.currentUser
   }
 };
+
+console.log('test');
 
 const store = configureStore(preloadState);
 

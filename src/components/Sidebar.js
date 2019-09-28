@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import uuidv4 from 'uuid';
+import uuid from 'uuid/v4';
 import {NavLink, withRouter} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 
@@ -66,21 +65,18 @@ const ListItem = (props) => {
   //   //   <NavLink {...props} innerRef={ref} />
   //   // ));
 
-  // const renderLink = React.useMemo(
-  //   () =>
-  //     // eslint-disable-next-line react/display-name
-  //     React.forwardRef((props, ref) => (
-  //       <NavLink {...props} innerRef={ref} />
-  //     )),
-  //   ['/catalogue/products'],
-  // );
+  const renderLink = React.useMemo(
+    () =>
+      // eslint-disable-next-line react/display-name
+      React.forwardRef((props, ref) => (
+        <NavLink {...props} innerRef={ref} />
+      )),
+    ['/catalogue/products'],
+  );
 
   const setOpenValue = () => {
-    console.log(location);
+    // pass
   };
-
-  console.log(location);
-  console.log(match);
 
   return (
     <React.Fragment>
@@ -89,7 +85,7 @@ const ListItem = (props) => {
           <MUIListItem
             onClick={() => setOpen(!open)}
             button={true}
-            key={uuidv4()}
+            key={uuid()}
           >
             <MUIListItemIcon>
               <Icon icon={rowItem.iconName} />
@@ -101,9 +97,11 @@ const ListItem = (props) => {
             <MUIList component="div" disablePadding>
               {rowItem.items.map(({labelName, urlName}) =>
                 <MUIListItem
-                  button
+                  className={classes.nested}
+                  component={renderLink}
+                  key={uuid()}
+                  button={true}
                   to={urlName}
-                  key={uuidv4()}
                 >
                   <MUIListItemText primary={labelName} />
                 </MUIListItem>
@@ -117,7 +115,16 @@ const ListItem = (props) => {
 };
 
 ListItem.propTypes = {
-  rowItem: PropTypes.arrayOf(PropTypes.object).isRequired,
+  rowItem: PropTypes.shape({
+    labelName: PropTypes.string.isRequired,
+    iconName: PropTypes.any.isRequired,
+    items: PropTypes.arrayOf(
+      PropTypes.shape({
+        labelName: PropTypes.string.isRequired,
+        urlName: PropTypes.string.isRequired
+      })
+    )
+  }),
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired
@@ -142,7 +149,7 @@ const Sidebar = (props) => {
         <ListItem
           {...props}
           rowItem={rowItem}
-          key={uuidv4()}
+          key={uuid()}
         />
       )}
     </MUIList>

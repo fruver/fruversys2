@@ -15,4 +15,6 @@ export const API_ROUTES = {
   TOKEN_AUTH: '/token-auth/',
   TOKEN_REFRESH: '/token-refresh/',
   USERS: '/users/',
+  PRODUCTS: '/products/',
+  CATEGORY: '/category/'
 };

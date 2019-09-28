@@ -13,8 +13,8 @@ import MUIButton from '@material-ui/core/Button';
 import MUISnackbar from '@material-ui/core/Snackbar';
 
 import TextField from '../../components/TextField';
-import {DASH_ROUTES} from '../../constants/Routes';
-import {login} from '../../redux/action/userAction';
+import {ROUTES} from '../../constants/Routes';
+import {login, user} from '../../redux/action/userAction';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -46,13 +46,11 @@ const SignInSchema = Yup.object().shape({
 const Login = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const {currentUser, error} = useSelector(store => store.user);
+  const {currentUser, token, error} = useSelector(store => store.user);
 
   if(currentUser) {
-    return <Redirect to={DASH_ROUTES.SUMMARY}/>;
+    return <Redirect to={ROUTES.SUMMARY}/>;
   }
-
-  console.log(error);
 
   return (
     <MUIGrid className={classes.root} container justify='center' alignItems='center'>
@@ -76,9 +74,9 @@ const Login = () => {
             validationSchema={SignInSchema}
             validateOnBlur={false}
             onSubmit={(values, {setSubmitting}) => {
-              dispatch(login(values.email, values.password)).finally(() => {
-                setSubmitting(false);
-              });
+              dispatch(login(values.email, values.password)).then((resp) => {
+                dispatch(user(resp.response.uid));
+              }).finally(() => setSubmitting(false));
             }}
           >
             {({isSubmitting}) => (

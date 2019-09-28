@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import uuidv4 from 'uuid/v4';
+import uuid from 'uuid/v4';
 
 import Checkbox from '@material-ui/core/Checkbox';
 import MUITableHead from '@material-ui/core/TableHead';
@@ -37,7 +37,7 @@ const TableHead = (props) => {
         </MUITableCell>
         {columns.map(column => (
           <MUITableCell
-            key={uuidv4()}
+            key={uuid()}
             align={column.type === 'numeric' ? 'right' : 'left'}
             padding={column.disablePadding ? 'none' : 'default'}
             sortDirection={orderBy === column.field ? order : false}

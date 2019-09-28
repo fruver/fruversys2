@@ -1,13 +1,14 @@
 import React from 'react';
 import {Switch, Route} from 'react-router-dom';
 
+import {ROUTES} from './constants/Routes';
 import PrivateRoute from './PrivateRoute';
-import {USER_ROUTES, DASH_ROUTES} from './constants/Routes';
 import Home from './views/Pages/Home';
 import Faq from './views/Pages/Faq';
 import Login from './views/User/Login';
 import Signup from './views/User/Signup';
 import ProductList from './views/Catalogue/ProductList';
+import CategoryList from './views/Catalogue/CategoryList';
 
 // Product Views
 //import ProductList from './pages/ProductList';
@@ -22,11 +23,14 @@ import ProductList from './views/Catalogue/ProductList';
 const Routes = () => {
   return (
     <Switch>
-      <Route component={Login} path={USER_ROUTES.SIGNIN}/>
-      <Route component={Signup} path={USER_ROUTES.SIGNUP}/>
-      <PrivateRoute component={Home} path={DASH_ROUTES.SUMMARY} exact/>
-      <PrivateRoute component={Faq} path={DASH_ROUTES.FAQ}/>
-      <PrivateRoute component={ProductList} path={DASH_ROUTES.PRODUCTS} exact/>
+      <Route component={Login} path={ROUTES.SIGNIN}/>
+      <Route component={Signup} path={ROUTES.SIGNUP}/>
+
+      <PrivateRoute component={Home} path={ROUTES.SUMMARY} exact/>
+      <PrivateRoute component={Faq} path={ROUTES.FAQ}/>
+
+      <PrivateRoute component={ProductList} path={ROUTES.PRODUCTS} exact/>
+      <PrivateRoute component={CategoryList} path={ROUTES.CATEGORY} exact/>>
 
       {/*<PrivateRoute*/}
       {/*  component={ProductCreate}*/}

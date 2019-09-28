@@ -2,11 +2,13 @@
   "name": "fruversys",
   "version": "0.0.1",
   "description": "Fruver System Manager",
-  "main": "index.js",
+  "main": "./main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "flow": "flow",
-    "webpack:dev": "webpack-dev-server --config webpack.config.js"
+    "prebuild": "rimraf public",
+    "start:dev": "npm run prebuild && webpack-dev-server --config webpack.config.js",
+    "electron": "electron .",
+    "start": "npm run webpack & npm run electron"
   },
   "repository": {
     "type": "git",
@@ -42,7 +44,12 @@
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "clean-webpack-plugin": "^3.0.0",
     "clsx": "^1.0.4",
+    "cross-env": "^6.0.0",
     "dotenv": "^8.0.0",
+    "electron": "^6.0.10",
+    "electron-debug": "^3.0.1",
+    "electron-devtools-installer": "^2.2.4",
+    "electron-log": "^3.0.8",
     "eslint": "^6.4.0",
     "eslint-plugin-react": "^7.13.0",
     "eslint-plugin-react-hooks": "^2.0.1",
@@ -67,6 +74,7 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "rimraf": "^3.0.0",
+    "source-map-support": "^0.5.13",
     "usb-barcode-scanner": "^1.0.2",
     "uuid": "^3.3.3",
     "webpack": "^4.34.0",
