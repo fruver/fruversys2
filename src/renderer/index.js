@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import {BrowserRouter as Router} from 'react-router-dom';
+import {MemoryRouter as Router} from 'react-router';
 
 import Auth from './services/Auth';
 import Routes from './Routes';
@@ -12,8 +12,6 @@ const preloadState = {
     currentUser: Auth.currentUser
   }
 };
-
-console.log('test');
 
 const store = configureStore(preloadState);
 

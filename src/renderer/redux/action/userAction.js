@@ -12,7 +12,7 @@ export const login = (email, password) => ({
   [HTTP_API]: {
     endpoint: API_ROUTES.TOKEN_AUTH,
     handleResponse: (response) => {
-
+      
     },
     options: {
       method: 'POST',
