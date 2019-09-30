@@ -1,10 +1,11 @@
 import React from 'react'
-import {Redirect} from 'react-router';
-import {useSelector, useDispatch} from 'react-redux'
+import {Redirect, Link} from 'react-router-dom';
+import {useSelector, useDispatch} from 'react-redux';
 import * as Yup from 'yup';
 import {Formik, Form, Field} from 'formik';
 
 import {makeStyles, createStyles} from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Container from '@material-ui/core/Container';
@@ -36,11 +37,8 @@ const useStyles = makeStyles((theme) =>
       margin: theme.spacing(2, 0, 0),
     },
     logo: {
-      display: 'flex',
-      alignItems: 'center',
       justifyContent: 'center',
-      padding: '0 8px',
-      ...theme.mixins.toolbar,
+      padding: '0 8px'
     },
   })
 );
@@ -57,7 +55,7 @@ const SignInSchema = Yup.object().shape({
 const Login = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const {currentUser, token, error} = useSelector(store => store.user);
+  const {currentUser, error} = useSelector(store => store.user);
 
   if(currentUser) {
     return <Redirect to={ROUTES.SUMMARY}/>;
@@ -67,75 +65,12 @@ const Login = () => {
     <React.Fragment>
       <AppBar>
         <Toolbar>
-          <div className={classes.logo}>
-            <
-          </div>
+          <Box justifyContent="center" className={classes.logo}>
+            <Logo />
+          </Box>
         </Toolbar>
       </AppBar>
     </React.Fragment>
-    <Container maxWidth='md'>
-      <Grid spacing={3}>
-
-      </Grid>
-    </Container>
-    <MUIGrid className={classes.root} container justify='center' alignItems='center'>
-      <Logo />
-      {error ? (
-        <MUISnackbar
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'center'
-          }}
-          open={true}
-          autoHideDuration={6000}
-          onClose={() => false}
-          message={error}
-        />
-      ) : null}
-      <MUICard className={classes.card}>
-        <MUICardHeader className={classes.cardHeader} title='Iniciar Sesión' />
-        <MUICardContent>
-          <Formik
-            initialValues={{email: 'andres@fruver.com', password: 'admin123'}}
-            validationSchema={SignInSchema}
-            validateOnBlur={false}
-            onSubmit={(values, {setSubmitting}) => {
-              dispatch(login(values.email, values.password)).then((resp) => {
-                dispatch(user(resp.response.uid));
-              }).finally(() => setSubmitting(false));
-            }}
-          >
-            {({isSubmitting}) => (
-              <Form noValidate autoComplete='off'>
-                <Field
-                  name='email'
-                  label='Correo electrónico'
-                  autoFocus
-                  component={TextField}
-                />
-                <Field
-                  name='password'
-                  label='Contraseña'
-                  type='password'
-                  component={TextField}
-                />
-                <MUIButton
-                  className={classes.submit}
-                  type='submit'
-                  variant='contained'
-                  color='primary'
-                  size='large'
-                  disabled={isSubmitting}
-                  fullWidth
-                >
-                  Iniciar Sesión
-                </MUIButton>
-              </Form>
-            )}
-          </Formik>
-        </MUICardContent>
-      </MUICard>
-    </MUIGrid>
   );
 };
 
