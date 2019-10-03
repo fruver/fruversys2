@@ -17,19 +17,11 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: true
+      preload: global.MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     }
   });
 
-  if (isDevelopment) {
-    mainWindow.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
-  } else {
-    mainWindow.loadURL(formatUrl({
-      pathname: path.join(__dirname, 'index.html'),
-      protocol: 'file',
-      slashes: true
-    }));
-  }
+  mainWindow.loadURL(global.MAIN_WINDOW_WEBPACK_ENTRY);
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {

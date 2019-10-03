@@ -2,16 +2,10 @@
   "name": "fruversys",
   "version": "0.0.1",
   "description": "Fruver System Manager",
+  "main": "./template.js",
   "scripts": {
-    "dev": "electron-webpack dev",
-    "compile": "electron-webpack",
-    "dist": "yarn compile && electron-builder",
-    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
-  },
-  "electronWebpack": {
-    "renderer": {
-      "webpackConfig": "webpack.renderer.js"
-    }
+    "dev": "",
+    "compile": "electron-webpack"
   },
   "repository": {
     "type": "git",
@@ -36,18 +30,13 @@
     "@babel/plugin-transform-arrow-functions": "^7.2.0",
     "@babel/preset-env": "^7.6.2",
     "@babel/preset-react": "^7.0.0",
-    "@fortawesome/fontawesome-svg-core": "^1.2.25",
-    "@fortawesome/pro-duotone-svg-icons": "^5.11.2",
-    "@fortawesome/react-fontawesome": "^0.1.4",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
     "clean-webpack-plugin": "^3.0.0",
     "clsx": "^1.0.4",
     "devtron": "^1.4.0",
     "electron": "^6.0.10",
-    "electron-builder": "^21.2.0",
     "electron-devtools-installer": "^2.2.4",
-    "electron-webpack": "^2.7.4",
     "eslint": "^6.5.0",
     "eslint-plugin-react": "^7.13.0",
     "eslint-plugin-react-hooks": "^2.0.1",
@@ -60,6 +49,9 @@
     "webpack-dev-server": "^3.8.2"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.25",
+    "@fortawesome/pro-duotone-svg-icons": "^5.11.2",
+    "@fortawesome/react-fontawesome": "^0.1.5",
     "@material-ui/core": "^4.5.0",
     "formik": "^1.5.8",
     "humps": "^2.0.1",
