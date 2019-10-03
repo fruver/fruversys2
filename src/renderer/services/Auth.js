@@ -1,5 +1,3 @@
-import jwtDecode from 'jwt-decode';
-
 class Auth {
 
   constructor() {
@@ -24,38 +22,6 @@ class Auth {
 
   logout = () => {
     localStorage.removeItem('auth');
-  };
-
-  tokenDecode = (token) => {
-    try {
-      const decode = jwtDecode(token);
-      return decode;
-    } catch (e) {
-      return {};
-    }
-  };
-
-  isTokenExpired = (token) => {
-    try {
-      const decode = jwtDecode(token);
-      const {exp: expiredAt} = decode.exp * 1000;
-      return new Date().getTime() >= expiredAt;
-    } catch(reason) {
-      console.log(reason);
-      return true;
-    }
-  };
-
-  handleResponse = (response) => {
-    const {access, refresh} = response;
-    // decode only token Access:
-    const {uid, exp} = jwtDecode(access);
-    return {
-      uid: uid,
-      tokenAccess: access,
-      tokenAccessExp: exp,
-      tokenRefresh: refresh,
-    };
   };
 
   getCurrentUser = () => {

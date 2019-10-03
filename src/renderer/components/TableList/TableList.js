@@ -9,8 +9,8 @@ import MUITableBody from '@material-ui/core/TableBody';
 import MUITableRow from '@material-ui/core/TableRow';
 import MUITableCell from '@material-ui/core/TableCell';
 
-import TableToolbar from './TableToolbar';
-import TableHead from './TableHead';
+import TableListToolbar from './TableListToolbar';
+import TableListHead from './TableListHead';
 import {Checkbox} from '@material-ui/core';
 
 const useStyles = makeStyles(theme =>
@@ -66,13 +66,16 @@ const stableSort = (array, cmp) => {
 
 const getSorting = (order, orderBy) => {
   return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
-}
+};
 
-const Table = (props) => {
-  const {title, dense, fieldOrderBy, columns, data} = props;
+const TableList = ({
+  title,
+  columns,
+  data
+}) => {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState(fieldOrderBy); // field
+  const [orderBy, setOrderBy] = React.useState(null); // field
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -85,7 +88,6 @@ const Table = (props) => {
 
   const handleSelectAllClick = (event) => {
     if(event.target.checked) {
-      // rows data
       const newSelects = data.map(n => n.name);
       setSelected(newSelects);
       return;
@@ -117,17 +119,19 @@ const Table = (props) => {
   return (
     <div className={classes.root}>
       <MUIPaper className={classes.paper}>
-        <TableToolbar
+
+        {/* Table List Toolbar */}
+        <TableListToolbar
           title={title}
           numSelected={selected.length}
         />
+        
         <div className={classes.tableWrapper}>
           <MUITable
             className={classes.table}
             aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
           >
-            <TableHead
+            {/* <TableListHead
               classes={classes}
               columns={columns}
               numSelected={selected.length}
@@ -136,7 +140,7 @@ const Table = (props) => {
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={0}
-            />
+            /> */}
             <MUITableBody>
               {stableSort(data, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -145,22 +149,27 @@ const Table = (props) => {
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
-                    <MUITableRow
-                      hover={true}
-                      onClick={event => handleClick(event, row.name)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={uuid()}
-                      selected={isItemSelected}
-                    >
-                      <MUITableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{'aria-labelledby': labelId}}
-                        />
+                    <MUITableRow key={uuid()}>
+                      <MUITableCell>
+                        asasdkasdk
                       </MUITableCell>
                     </MUITableRow>
+                    // <MUITableRow
+                    //   hover={true}
+                    //   onClick={event => handleClick(event, row.name)}
+                    //   role="checkbox"
+                    //   aria-checked={isItemSelected}
+                    //   tabIndex={-1}
+                    //   key={uuid()}
+                    //   selected={isItemSelected}
+                    // >
+                    //   <MUITableCell padding="checkbox">
+                    //     <Checkbox
+                    //       checked={isItemSelected}
+                    //       inputProps={{'aria-labelledby': labelId}}
+                    //     />
+                    //   </MUITableCell>
+                    // </MUITableRow>
                   );
                 })
               }
@@ -172,12 +181,10 @@ const Table = (props) => {
   );
 };
 
-Table.propTypes = {
+TableList.propTypes = {
   title: PropTypes.string.isRequired,
-  dense: PropTypes.bool,
-  fieldOrderBy: PropTypes.string,
-  columns: TableHead.propTypes.columns.isRequired,
+  columns: TableListHead.propTypes.columns.isRequired,
   data: PropTypes.arrayOf(PropTypes.object)
 };
 
-export default Table;
+export default TableList;

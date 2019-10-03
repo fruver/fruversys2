@@ -1,11 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import uuid from 'uuid/v4';
+import {matchPath} from 'react-router';
 import {NavLink, withRouter} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 
 import {FontAwesomeIcon as Icon} from '@fortawesome/react-fontawesome';
-import {faScanner, faChevronUp, faChevronDown} from '@fortawesome/pro-duotone-svg-icons';
+import {
+  faScanner,
+  faUsers,
+  faChevronUp,
+  faChevronDown,
+} from '@fortawesome/pro-duotone-svg-icons';
 
 import {makeStyles, createStyles} from '@material-ui/core/styles';
 import MUIList from '@material-ui/core/List';
@@ -28,7 +34,7 @@ const useStyles = makeStyles(theme =>
     nested: {
       paddingLeft: theme.spacing(4),
     },
-    activeListItem: {
+    listItemActive: {
       backgroundColor: theme.palette.action.selected
     }
   }),
@@ -37,6 +43,7 @@ const useStyles = makeStyles(theme =>
 const NavItems = [
   {
     labelName: 'Catalogo',
+    urlName: ROUTES.CATALOGUE,
     iconName: faScanner,
     items: [
       {
@@ -45,38 +52,85 @@ const NavItems = [
       },
       {
         labelName: 'Departamentos',
-        urlName: ROUTES.CATEGORY
+        urlName: ROUTES.DEPARTAMENTS
       },
       {
         labelName: 'Marcas',
         urlName: ROUTES.BRANDS
       }
     ]
+  },
+  {
+    labelName: 'Cliente',
+    urlName: ROUTES.CUSTOMER,
+    iconName: faUsers,
+    items: [
+      {
+        labelName: 'Usuario',
+        urlName: ROUTES.USER
+      },
+      {
+        labelName: 'Dirección de envío',
+        urlName: ROUTES.USERADDRESS
+      }
+    ]
   }
 ];
 
-const ListItem = (props) => {
-  const classes = useStyles();
-  const {rowItem, location, match} = props;
-  const [open, setOpen] = React.useState(false);
+const ListItemLink = ({
+  urlName,
+  labelName,
+  classes,
+  ...otherProps
+}) => {
+  const [isSelected, setIsSelected] = React.useState(false);
 
-  // eslint-disable-next-line react/display-name
-  // const renderLink = React.forwardRef((props, ref) => (
-  //   //   <NavLink {...props} innerRef={ref} />
-  //   // ));
+  const renderLink = React.useMemo(() => (
+    // eslint-disable-next-line react/display-name
+    React.forwardRef((linkProps, ref) => (
+      <NavLink
+        innerRef={ref}
+        to={urlName}
+        {...linkProps}
+      />
+    ))
+  ), [urlName]);
 
-  const renderLink = React.useMemo(
-    () =>
-      // eslint-disable-next-line react/display-name
-      React.forwardRef((props, ref) => (
-        <NavLink {...props} innerRef={ref} />
-      )),
-    ['/catalogue/products'],
-  );
-
-  const setOpenValue = () => {
-    // pass
+  const oddEvent = (match) => {
+    if (match) {
+      if (isSelected !== true) {
+        setIsSelected(true);
+      } 
+    }
   };
+
+  return (
+    <MUIListItem
+      button={true}
+      className={classes.nested}
+      component={renderLink}
+      isActive={oddEvent}
+      selected={isSelected}
+      to={urlName}
+      {...otherProps}
+    >
+      <MUIListItemText primary={labelName} />
+    </MUIListItem>
+  );
+};
+
+ListItemLink.propTypes = {
+  urlName: PropTypes.string.isRequired,
+  labelName: PropTypes.string.isRequired,
+  classes: PropTypes.object.isRequired
+};
+
+const ListItem = ({
+  classes,
+  isOpen,
+  rowItem
+}) => {
+  const [open, setOpen] = React.useState(isOpen);
 
   return (
     <React.Fragment>
@@ -93,18 +147,15 @@ const ListItem = (props) => {
             <MUIListItemText primary={rowItem.labelName} />
             {open ? <Icon icon={faChevronUp} /> : <Icon icon={faChevronDown} />}
           </MUIListItem>
-          <Collapse in={open} timeout="auto">
+          <Collapse in={open} timeout='auto' unmountOnExit>
             <MUIList component="div" disablePadding>
               {rowItem.items.map(({labelName, urlName}) =>
-                <MUIListItem
-                  className={classes.nested}
-                  component={renderLink}
+                <ListItemLink
+                  classes={classes}
+                  labelName={labelName}
                   key={uuid()}
-                  button={true}
-                  to={urlName}
-                >
-                  <MUIListItemText primary={labelName} />
-                </MUIListItem>
+                  urlName={urlName}
+                />
               )}
             </MUIList>
           </Collapse>
@@ -115,6 +166,8 @@ const ListItem = (props) => {
 };
 
 ListItem.propTypes = {
+  classes: PropTypes.object.isRequired,
+  isOpen: PropTypes.any,
   rowItem: PropTypes.shape({
     labelName: PropTypes.string.isRequired,
     iconName: PropTypes.any.isRequired,
@@ -124,36 +177,45 @@ ListItem.propTypes = {
         urlName: PropTypes.string.isRequired
       })
     )
-  }),
-  match: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  })
 };
 
-const Sidebar = (props) => {
+const Sidebar = ({location}) => {
   const classes = useStyles();
   const {currentUser} = useSelector(store => store.user);
+
+  const isOpen = (rowItem) => {
+    const match = matchPath(location.pathname, {
+      path: rowItem.urlName
+    });
+    return match ? true : false;
+  };
 
   return (
     <MUIList className={classes.root}>
       <MUIListItem>
         <MUIListItemText
-          primary={`Hola, ${currentUser.first_name}`}
+          primary={`Hola, ${currentUser.displayName}`}
           secondary={currentUser.email}
         />
       </MUIListItem>
-
       <Divider />
-
       {NavItems.map(rowItem =>
         <ListItem
-          {...props}
-          rowItem={rowItem}
+          classes={classes}
+          isOpen={isOpen(rowItem)}
           key={uuid()}
+          rowItem={rowItem}
         />
       )}
     </MUIList>
   );
+};
+
+Sidebar.propTypes = {
+  location: PropTypes.shape({
+    pathname: PropTypes.string
+  }).isRequired
 };
 
 export default withRouter(Sidebar);

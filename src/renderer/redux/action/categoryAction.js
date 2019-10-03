@@ -5,27 +5,15 @@ export const CATEGORY_REQUEST = 'CATEGORY_REQUEST';
 export const CATEGORY_SUCCESS = 'CATEGORY_SUCCESS';
 export const CATEGORY_FAILURE = 'CATEGORY_FAILURE';
 
-export const getAllCategory = () => dispatch => {
+export const fetchDepartaments = () => {
   return {
-    HTTP_API: {
-      types: [CATEGORY_REQUEST, CATEGORY_REQUEST, CATEGORY_FAILURE],
+    [HTTP_API]: {
       endpoint: ROUTES.CATEGORY,
-      options: null
+      options: {
+        method: 'GET',
+        requireToken: true 
+      },
+      types: [CATEGORY_REQUEST, CATEGORY_REQUEST, CATEGORY_FAILURE]
     }
   };
-};
-
-export const categories = () => dispatch => {
-  dispatch({type: CATEGORY_REQUEST});
-  return API.Category().then(response => {
-    dispatch({
-      type: CATEGORY_SUCCESS,
-      payload: response
-    });
-  }).catch(reason => {
-    dispatch({
-      type: CATEGORY_FAILURE,
-      payload: reason.message
-    });
-  });
 };

@@ -6,8 +6,11 @@ export const ROUTES = {
   FAQ: '/faq',
   CATALOGUE: '/catalogue',
   PRODUCTS: '/catalogue/products',
-  CATEGORY: '/catalogue/category',
+  DEPARTAMENTS: '/catalogue/departaments',
   BRANDS: '/catalogue/brands',
+  CUSTOMER: '/customer',
+  USER: '/customer/users',
+  USERADDRESS: '/customer/userAdress'
 };
 
 export const API_ROUTES = {

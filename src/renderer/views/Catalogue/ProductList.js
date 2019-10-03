@@ -1,7 +1,8 @@
 import React from 'react';
+import MaterialTable from 'material-table';
 
-import Table from '../../components/Table';
 import Layout from '../../components/Layout';
+import Topbar from '../../components/Topbar';
 
 const columns = [
   {title: 'Ref', field: 'sku'},
@@ -19,13 +20,13 @@ const ProductList = () => {
   const subtitle = '';
 
   return (
-    <Layout title={title}>
-      <Table
-        title={title}
+    <React.Fragment>
+      <Topbar />
+      <MaterialTable
         columns={columns}
-        fieldOrderBy='Ref'
       />
-    </Layout>
+    </React.Fragment>
+
   );
 };
 

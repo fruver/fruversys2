@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {MemoryRouter as Router} from 'react-router';
+import {persistStore} from 'redux-persist';
+import {PersistGate} from 'redux-persist/integration/react';
 
 import Auth from './services/Auth';
 import Routes from './Routes';
@@ -14,13 +16,16 @@ const preloadState = {
 };
 
 const store = configureStore(preloadState);
+const persistor = persistStore(store);
 
 const App = () => {
   return (
     <Provider store={store}>
-      <Router>
-        <Routes />
-      </Router>
+      <PersistGate loading={null} persistor={persistor}>
+        <Router>
+          <Routes />
+        </Router>
+      </PersistGate>
     </Provider>
   );
 };

@@ -31,9 +31,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const TableToolbar = (props) => {
+const TableToolbar = ({
+  title,
+  numSelected
+}) => {
   const classes = useStyles();
-  const {numSelected, title} = props;
 
   return (
     <Toolbar

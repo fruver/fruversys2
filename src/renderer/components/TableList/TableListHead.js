@@ -3,46 +3,44 @@ import PropTypes from 'prop-types';
 import uuid from 'uuid/v4';
 
 import Checkbox from '@material-ui/core/Checkbox';
-import MUITableHead from '@material-ui/core/TableHead';
-import MUITableRow from '@material-ui/core/TableRow';
-import MUITableCell from '@material-ui/core/TableCell';
-import MUITableSortLabel from '@material-ui/core/TableSortLabel';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
 
-const TableHead = (props) => {
-  const {
-    classes,
-    columns,
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort
-  } = props;
-
+const TableListHead = ({
+  classes,
+  columns,
+  onSelectAllClick,
+  order,
+  orderBy,
+  numSelected,
+  rowCount,
+  onRequestSort
+}) => {
   const createSortHandler = property => event => {
     onRequestSort(property, event);
   };
 
   return (
-    <MUITableHead>
-      <MUITableRow>
-        <MUITableCell padding="checkbox">
+    <TableHead>
+      <TableRow>
+        <TableCell padding="checkbox">
           <Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={numSelected === rowCount}
             onChange={onSelectAllClick}
             inputProps={{'aria-label': 'select all desserts'}}
           />
-        </MUITableCell>
+        </TableCell>
         {columns.map(column => (
-          <MUITableCell
+          <TableCell
             key={uuid()}
             align={column.type === 'numeric' ? 'right' : 'left'}
             padding={column.disablePadding ? 'none' : 'default'}
             sortDirection={orderBy === column.field ? order : false}
           >
-            <MUITableSortLabel
+            <TableSortLabel
               active={orderBy === column.field}
               direction={order}
               onClick={createSortHandler(column.field)}
@@ -53,15 +51,15 @@ const TableHead = (props) => {
                   {order === 'desc' ? 'sorted descending': 'sorted ascending'}
                 </span>
               ) : null}
-            </MUITableSortLabel>
-          </MUITableCell>
+            </TableSortLabel>
+          </TableCell>
         ))}
-      </MUITableRow>
-    </MUITableHead>
+      </TableRow>
+    </TableHead>
   );
 };
 
-TableHead.propTypes = {
+TableListHead.propTypes = {
   classes: PropTypes.object,
   columns: PropTypes.arrayOf(
     PropTypes.shape({
@@ -83,6 +81,6 @@ TableHead.propTypes = {
   numSelected: PropTypes.number.isRequired,
   rowCount: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired
-}
+};
 
-export default TableHead;
+export default TableListHead;

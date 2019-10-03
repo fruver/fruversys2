@@ -5,14 +5,17 @@ import {API_ROUTES} from '../../constants/Routes';
 // Action key that carries API call info interpreted by this Redux middleware.
 export const HTTP_API = 'HTTP_API';
 
-const http = (endpoint, options) => {
+const http = async (endpoint, options, state) => {
   let headers = {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
   };
 
-  if(options && options.headers) {
-    headers = {...headers, ...options.headers};
+  if(options) {
+    if (options.requireToken !== 'undefined' &&
+        options.requireToken === true) {
+      headers['Authorization'] = `Token ${state.auth.token}`;
+    }
   }
 
   return fetch(
@@ -27,7 +30,12 @@ const http = (endpoint, options) => {
     const error = new Error(response.statusText);
     error.response = response;
     throw error;
-  }).then(response => response.json()).then(response => {
+  }).then((response) => {
+    return response.json();
+  }).then((response) => {
+    if (typeof options.handleResponse !== 'undefined') {
+      response = options.handleResponse(response);
+    }
     return camelizeKeys(response);
   });
 };
@@ -41,7 +49,6 @@ export default store => next => action => {
 
   const {
     endpoint,
-    handleResponse,
     types,
     options
   } = httpOpts;
@@ -56,12 +63,6 @@ export default store => next => action => {
 
   if(types.every(type => typeof type !== 'string')) {
     throw new Error('Expected action types to be strings.');
-  }
-
-  if(typeof handleResponse !== 'undefined') {
-    if(typeof handleResponse !== 'function') {
-      throw new Error('Handle response must be a function');
-    }
   }
 
   const actionWith = data => {
@@ -80,13 +81,12 @@ export default store => next => action => {
   // Pasemos el token si existe y si es valido.
   // Necesitamos saber si el token es valido.
 
-
-  return http(endpoint, options).then(response => {
+  return http(endpoint, options, store.getState()).then((response) => {
     return next(actionWith({
-      response: handleResponse !== 'undefined' ? handleResponse(response): response,
+      response: response,
       type: SUCCESS
     }));
-  }).catch(error => {
+  }).catch((error) => {
     return next(actionWith({
       error: error.message || 'Something bad happened',
       type: FAILURE

@@ -6,8 +6,13 @@ import PrivateRoute from './PrivateRoute';
 import Home from './views/Home';
 import Faq from './views/Faq';
 import Login from './views/user/Login';
-import ProductList from './views/catalogue/ProductList';
-import CategoryList from './views/catalogue/CategoryList';
+import UserList from './views/user/UserList';
+
+import {
+  DepartamentList,
+  DepartamentForm,
+  ProductList
+} from './views/catalogue';
 
 // Product Views
 //import ProductList from './pages/ProductList';
@@ -25,8 +30,14 @@ const Routes = () => {
       <Route component={Login} path={ROUTES.SIGNIN}/>
       <PrivateRoute component={Home} path={ROUTES.SUMMARY} exact/>
       <PrivateRoute component={Faq} path={ROUTES.FAQ}/>
+
+      <PrivateRoute component={UserList} path={ROUTES.USER} exact/>
+
       <PrivateRoute component={ProductList} path={ROUTES.PRODUCTS} exact/>
-      <PrivateRoute component={CategoryList} path={ROUTES.CATEGORY} exact/>
+
+      <PrivateRoute component={DepartamentList} path={ROUTES.DEPARTAMENTS} exact/>
+      <PrivateRoute component={DepartamentForm} path={`${ROUTES.DEPARTAMENTS}/:id`} exact/>
+      <PrivateRoute component={DepartamentForm} path={`${ROUTES.DEPARTAMENTS}/create`} exact/>
 
       {/*<PrivateRoute*/}
       {/*  component={ProductCreate}*/}

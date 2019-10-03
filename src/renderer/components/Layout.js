@@ -38,8 +38,8 @@ const useStyles = makeStyles(theme =>
       ...theme.mixins.toolbar,
     },
     drawerLogoSvg: {
-      width: '5em',
-      height: '2em',
+      width: '10rem',
+      height: '100%',
       color: '#009150'
     },
     toolbar: theme.mixins.toolbar,
@@ -55,11 +55,15 @@ const Layout = ({title, children}) => {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}><MUICssBaseline />
+    <div className={classes.root}>
+
+      <MUICssBaseline/>
+
       <Topbar
         className={classes.appBar}
         title={title}
       />
+
       <MUIDrawer
         className={classes.drawer}
         anchor="left"
@@ -72,10 +76,13 @@ const Layout = ({title, children}) => {
             <Logo className={classes.drawerLogoSvg} />
           </Link>
         </div>
+
         {/* Divider */}
         <MUIDivider />
+
         {/* Sidebar */}
         <Sidebar />
+
       </MUIDrawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
@@ -87,7 +94,7 @@ const Layout = ({title, children}) => {
 
 Layout.propTypes = {
   title: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired
+  children: PropTypes.any.isRequired
 };
 
 export default Layout;
